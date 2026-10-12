@@ -28,7 +28,11 @@ function getStatus(order: AdminOrder) {
 
 function statusClass(status: string) {
   const normalized = status.toLowerCase();
-  if (normalized.includes("success") || normalized.includes("confirm")) return "success";
+  if (
+    normalized.includes("success") ||
+    normalized.includes("confirm") ||
+    normalized.includes("complete")
+  ) return "success";
   if (normalized.includes("fail")) return "failed";
   return "pending";
 }
@@ -71,7 +75,8 @@ export function OrdersTable({
     const customer = `${orderValue(order, ["buyer_first_name", "name", "first_name"], "")} ${orderValue(order, ["buyer_last_name", "lastName", "last_name"], "")}`.trim() || "N/A";
     const statusValue = getStatus(order);
     const transactionId = orderValue(order, ["transaction_id", "payment_id", "txn_id"], "Not paid");
-    const payment = transactionId.toLowerCase() === "not paid" ? "Not Paid" : "Paid";
+    const paymentFailed = statusValue.toLowerCase().includes("fail");
+    const payment = paymentFailed || transactionId.toLowerCase() === "not paid" ? "Not Paid" : "Paid";
 
     return {
       id: index + 1,
@@ -429,8 +434,9 @@ export function OrdersTable({
         }
 
         .statusTag.success {
-          background: rgba(60, 180, 106, 0.14);
-          color: #93e4ae;
+          border: 1px solid #13a83f;
+          background: rgba(0, 135, 45, .38);
+          color: #72f39a;
         }
 
         .statusTag.failed {
