@@ -20,6 +20,7 @@ const formTitles: Record<string, string> = {
   overseas: "Overseas Partnership",
   support: "Customer Support Request",
   contact: "Contact Us Inquiry",
+  visit: "Visit Planning Request",
 };
 
 const customLabels: Record<string, string> = {
@@ -27,6 +28,7 @@ const customLabels: Record<string, string> = {
   owner: "Owner/Partner Name", location: "Preferred Location", category: "Category", outlet: "Media Outlet",
   type: "Type", deadline: "Deadline", range: "Investment Range", position: "Position", experience: "Experience",
   investment: "Investment Capacity", country: "Country", business: "Business Type", message: "Message", cv: "CV",
+  sourcePage: "Source Page",
 };
 
 function text(value: unknown) {
@@ -211,7 +213,7 @@ export async function sendContactSubmissionEmail(formType: string, data: EmailDa
   const configuredSupportEmail = text(process.env.SUPPORT_EMAIL);
   const validHrEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(configuredHrEmail);
   const validSupportEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(configuredSupportEmail);
-  const routesToSupport = ["support", "contact", "vendor", "media", "investor", "overseas"].includes(formType);
+  const routesToSupport = ["support", "contact", "visit", "vendor", "media", "investor", "overseas"].includes(formType);
   const recipient = formType === "careers" && validHrEmail
     ? configuredHrEmail
     : routesToSupport && validSupportEmail

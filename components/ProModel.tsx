@@ -10,17 +10,23 @@ import { ProductKeyFeaturesGallery } from "@/components/ProductKeyFeaturesGaller
 import { ModelComparison } from "@/components/ModelComparison";
 import { modelComparisonModels, modelComparisonRows } from "@/data/modelComparison";
 import proImage from "@/asset/Model/Pro.png";
+import proHeroImageOne from "@/asset/Model/Pro/hero/test.jpg";
+import proHeroImageTwo from "@/asset/Model/Pro/hero/2img.jpg";
+import proHeroImageThree from "@/asset/Model/Pro/hero/3img.png";
+
+const proHeroImages = [proHeroImageOne, proHeroImageTwo, proHeroImageThree] as const;
 
 export function ProModel() {
   return (
     <section className="proPage">
       <ProductDetailHero
         modelName="NX100 Pro"
-        headline="Long rides to heavy loads"
-        description="Power for the long road, space for the long list."
+        headline="Long rides. Heavy loads."
+        description="Power for the long road. Space for the long list."
+        heroImages={proHeroImages}
       />
 
-      <ProductDetailNav />
+      <ProductDetailNav overlayHero />
 
       <ProductPerformanceBand modelName="NX100 Pro" />
 

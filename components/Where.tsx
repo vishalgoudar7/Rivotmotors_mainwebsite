@@ -29,7 +29,8 @@ export function Where() {
     event.preventDefault();
     const form = event.currentTarget;
     const formData = new FormData(form);
-    formData.set("formType", "support");
+    formData.set("formType", "visit");
+    formData.set("sourcePage", "Reach Us - Plan Your Visit");
     setSubmitting(true);
     setError("");
     try {

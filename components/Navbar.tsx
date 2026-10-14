@@ -58,6 +58,7 @@ const mobileNavItems = [
 
 export function Navbar() {
   const pathname = usePathname();
+  const usesImageHero = pathname === "/" || Boolean(pathname?.startsWith("/products/"));
   const [menuOpen, setMenuOpen] = useState(false);
   const [productsOpen, setProductsOpen] = useState(false);
   const [communityOpen, setCommunityOpen] = useState(false);
@@ -106,7 +107,7 @@ export function Navbar() {
   };
 
   return (
-    <header className="rivotHeader isHomeHeader">
+    <header className={`rivotHeader isHomeHeader${usesImageHero ? " isHeroOverlay" : " isContentHeader"}`}>
       <Link href="/" className="rivotBrand" aria-label="Rivot">
         <span className="rivotBrandMark">
           <Image src={logo} alt="RIVOT" priority />
@@ -817,7 +818,8 @@ export function Navbar() {
     height: 74px;
     padding: 0 clamp(28px, 4vw, 50px);
     gap: clamp(42px, 9vw, 160px);
-    background: linear-gradient(180deg, rgba(4, 6, 9, .72) 0%, rgba(4, 6, 9, .28) 72%, transparent 100%) !important;
+    background: transparent !important;
+    box-shadow: none;
     color: #fff !important;
   }
 
@@ -868,6 +870,68 @@ export function Navbar() {
   .rivotHeader.isHomeHeader .rivotExploreButton:hover,
   .rivotHeader.isHomeHeader .rivotExploreButton[aria-expanded="true"] {
     color: rgba(255, 255, 255, .9) !important;
+  }
+
+  html[data-rivot-theme="light"] .rivotHeader.isHomeHeader .rivotHeaderLinks a,
+  html[data-rivot-theme="light"] .rivotHeader.isHomeHeader .rivotProductsButton,
+  html[data-rivot-theme="light"] .rivotHeader.isHomeHeader .rivotCommunityButton,
+  html[data-rivot-theme="light"] .rivotHeader.isHomeHeader .rivotExploreButton {
+    color: #111 !important;
+  }
+
+  html[data-rivot-theme="light"] .rivotHeader.isHomeHeader .rivotBrandMark img {
+    filter: brightness(0) !important;
+  }
+
+  html[data-rivot-theme="light"] .rivotHeader.isHomeHeader {
+    background: transparent !important;
+    box-shadow: none;
+  }
+
+  .rivotHeader.isHomeHeader.isHeroOverlay {
+    background: transparent !important;
+    box-shadow: none;
+  }
+
+  html[data-rivot-theme="light"] .rivotHeader.isHomeHeader.isHeroOverlay .rivotBrandMark img,
+  .rivotHeader.isHomeHeader.isHeroOverlay .rivotBrandMark img {
+    filter: brightness(0) invert(1) !important;
+  }
+
+  html[data-rivot-theme="light"] .rivotHeader.isHomeHeader.isHeroOverlay .rivotHeaderLinks a,
+  html[data-rivot-theme="light"] .rivotHeader.isHomeHeader.isHeroOverlay .rivotProductsButton,
+  html[data-rivot-theme="light"] .rivotHeader.isHomeHeader.isHeroOverlay .rivotCommunityButton,
+  html[data-rivot-theme="light"] .rivotHeader.isHomeHeader.isHeroOverlay .rivotExploreButton,
+  .rivotHeader.isHomeHeader.isHeroOverlay .rivotHeaderLinks a,
+  .rivotHeader.isHomeHeader.isHeroOverlay .rivotProductsButton,
+  .rivotHeader.isHomeHeader.isHeroOverlay .rivotCommunityButton,
+  .rivotHeader.isHomeHeader.isHeroOverlay .rivotExploreButton {
+    color: rgba(255, 255, 255, .92) !important;
+  }
+
+  html[data-rivot-theme="light"] .rivotHeader.isHomeHeader.isHeroOverlay .rivotMenuButton,
+  .rivotHeader.isHomeHeader.isHeroOverlay .rivotMenuButton {
+    color: #fff !important;
+  }
+
+  .rivotHeader.isHomeHeader.isHeroOverlay .rivotHeaderLinks a:hover,
+  .rivotHeader.isHomeHeader.isHeroOverlay .rivotProductsButton:hover,
+  .rivotHeader.isHomeHeader.isHeroOverlay .rivotCommunityButton:hover,
+  .rivotHeader.isHomeHeader.isHeroOverlay .rivotExploreButton:hover,
+  .rivotHeader.isHomeHeader.isHeroOverlay .rivotProductsButton[aria-expanded="true"],
+  .rivotHeader.isHomeHeader.isHeroOverlay .rivotCommunityButton[aria-expanded="true"],
+  .rivotHeader.isHomeHeader.isHeroOverlay .rivotExploreButton[aria-expanded="true"] {
+    color: #ef7430 !important;
+  }
+
+  html[data-rivot-theme="light"] .rivotHeader.isHomeHeader .rivotHeaderLinks a:hover,
+  html[data-rivot-theme="light"] .rivotHeader.isHomeHeader .rivotProductsButton:hover,
+  html[data-rivot-theme="light"] .rivotHeader.isHomeHeader .rivotProductsButton[aria-expanded="true"],
+  html[data-rivot-theme="light"] .rivotHeader.isHomeHeader .rivotCommunityButton:hover,
+  html[data-rivot-theme="light"] .rivotHeader.isHomeHeader .rivotCommunityButton[aria-expanded="true"],
+  html[data-rivot-theme="light"] .rivotHeader.isHomeHeader .rivotExploreButton:hover,
+  html[data-rivot-theme="light"] .rivotHeader.isHomeHeader .rivotExploreButton[aria-expanded="true"] {
+    color: #ef7430 !important;
   }
 
   html[data-rivot-theme="light"] .rivotHeader.isHomeHeader .rivotThemeToggle,

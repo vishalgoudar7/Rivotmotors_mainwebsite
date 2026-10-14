@@ -182,9 +182,18 @@ export function Faqs() {
         }
 
         .rivotFaqs {
+          --faq-bg: #ffffff;
+          --faq-text: #111111;
+          --faq-muted: #5d6570;
+          --faq-tab-bg: #f1f2f3;
+          --faq-tab-text: #34383d;
+          --faq-card-bg: #f4f4f4;
+          --faq-card-border: rgba(17, 17, 17, .06);
+          --faq-card-hover: #eeeeee;
           padding: clamp(44px, 5vw, 72px) clamp(18px, 4vw, 64px) clamp(54px, 6vw, 84px);
-          background: #fff;
-          color: #111;
+          background: var(--faq-bg);
+          color: var(--faq-text);
+          transition: background-color .25s ease, color .25s ease;
         }
 
         .rivotFaqsShell {
@@ -202,7 +211,7 @@ export function Faqs() {
 
         .rivotFaqsHeader h2 {
           margin: 0;
-          color: #111;
+          color: var(--faq-text);
           font-size: clamp(34px, 4vw, 46px);
           font-weight: 900;
           line-height: 1;
@@ -225,8 +234,9 @@ export function Faqs() {
           padding: 0 14px;
           border: 0;
           border-radius: 999px;
-          background: #f3f3f3;
-          color: #34383d;
+          border: 1px solid var(--faq-card-border);
+          background: var(--faq-tab-bg);
+          color: var(--faq-tab-text);
           font: inherit;
           font-size: 15px;
           font-weight: 900;
@@ -242,11 +252,13 @@ export function Faqs() {
 
         .rivotFaqTabs button:hover {
           transform: translateY(-1px);
-          box-shadow: 0 10px 22px rgba(17, 17, 17, .06);
+          background: var(--faq-card-hover);
+          box-shadow: 0 10px 22px rgba(17, 17, 17, .08);
         }
 
         .rivotFaqTabs button.active,
         .rivotFaqTabs button[aria-pressed="true"] {
+          border-color: #ef7430;
           background: #ef7430;
           color: #fff;
           box-shadow: 0 14px 26px rgba(239, 116, 48, .22);
@@ -259,9 +271,16 @@ export function Faqs() {
 
         .rivotFaqItem {
           overflow: hidden;
+          border: 1px solid var(--faq-card-border);
           border-radius: 15px;
-          background: #f4f4f4;
+          background: var(--faq-card-bg);
           box-shadow: none;
+          transition: background-color .2s ease, border-color .2s ease;
+        }
+
+        .rivotFaqItem:hover,
+        .rivotFaqItem[open] {
+          background: var(--faq-card-hover);
         }
 
         .rivotFaqItem summary {
@@ -271,7 +290,7 @@ export function Faqs() {
           gap: 20px;
           min-height: clamp(58px, 4.8vw, 72px);
           padding: 0 clamp(20px, 2.4vw, 30px);
-          color: #111;
+          color: var(--faq-text);
           cursor: pointer;
           list-style: none;
         }
@@ -281,7 +300,7 @@ export function Faqs() {
         }
 
         .rivotFaqItem summary span {
-          color: #111;
+          color: var(--faq-text);
           font-size: clamp(16px, 1.15vw, 19px);
           font-weight: 800;
           line-height: 1.25;
@@ -303,7 +322,7 @@ export function Faqs() {
           width: 15px;
           height: 2px;
           border-radius: 999px;
-          background: #111;
+          background: var(--faq-text);
           transform: translate(-50%, -50%);
         }
 
@@ -319,13 +338,21 @@ export function Faqs() {
         .rivotFaqItem p {
           margin: 0;
           padding: 0 clamp(20px, 2.4vw, 30px) clamp(18px, 2vw, 24px);
-          color: #5d6570;
+          color: var(--faq-muted);
           font-size: clamp(14px, .95vw, 16px);
           font-weight: 650;
           line-height: 1.6;
         }
 
         html:is([data-theme="dark"], [data-rivot-theme="dark"]) .rivotFaqs {
+          --faq-bg: #080909;
+          --faq-text: #f5f5f2;
+          --faq-muted: #aeb4b4;
+          --faq-tab-bg: #181a1b;
+          --faq-tab-text: #d8dada;
+          --faq-card-bg: #141617;
+          --faq-card-border: rgba(255, 255, 255, .1);
+          --faq-card-hover: #1b1e1f;
           background:
             radial-gradient(circle at 82% 12%, rgba(239, 116, 48, .08), transparent 30%),
             #080909 !important;
@@ -343,8 +370,13 @@ export function Faqs() {
         }
 
         html:is([data-theme="dark"], [data-rivot-theme="dark"]) .rivotFaqItem {
-          background: #151717 !important;
-          border: 1px solid rgba(255, 255, 255, .1);
+          background: var(--faq-card-bg) !important;
+          border-color: var(--faq-card-border);
+        }
+
+        html:is([data-theme="dark"], [data-rivot-theme="dark"]) .rivotFaqItem:hover,
+        html:is([data-theme="dark"], [data-rivot-theme="dark"]) .rivotFaqItem[open] {
+          background: var(--faq-card-hover) !important;
         }
 
         html:is([data-theme="dark"], [data-rivot-theme="dark"]) .rivotFaqItem p {
@@ -357,9 +389,17 @@ export function Faqs() {
         }
 
         html:is([data-theme="dark"], [data-rivot-theme="dark"]) .rivotFaqTabs button:not(.active) {
-          border: 1px solid rgba(255, 255, 255, .11);
-          background: #1a1c1c;
-          color: #d8dada;
+          border-color: var(--faq-card-border);
+          background: var(--faq-tab-bg);
+          color: var(--faq-tab-text);
+        }
+
+        html:is([data-theme="dark"], [data-rivot-theme="dark"]) .rivotFaqTabs button:not(.active):hover {
+          background: var(--faq-card-hover);
+        }
+
+        html:is([data-theme="light"], [data-rivot-theme="light"]) .rivotFaqs {
+          color-scheme: light;
         }
 
         @media (prefers-reduced-motion: reduce) {

@@ -14,7 +14,11 @@ const navigationItems = [
 
 type ProductSectionId = (typeof navigationItems)[number]["id"];
 
-export function ProductDetailNav() {
+type ProductDetailNavProps = {
+  overlayHero?: boolean;
+};
+
+export function ProductDetailNav({ overlayHero = false }: ProductDetailNavProps) {
   const [activeSection, setActiveSection] = useState<ProductSectionId>(navigationItems[0].id);
 
   useEffect(() => {
@@ -40,7 +44,10 @@ export function ProductDetailNav() {
   }, []);
 
   return (
-    <nav className="productDetailNav" aria-label="Product page navigation">
+    <nav
+      className={`productDetailNav${overlayHero ? " isHeroOverlay" : ""}`}
+      aria-label="Product page navigation"
+    >
       <div className="productDetailNavShell">
         <div className="productDetailNavLinks">
           {navigationItems.map((item) => (
@@ -70,6 +77,23 @@ export function ProductDetailNav() {
           background: rgba(255, 255, 255, .94);
           box-shadow: 0 10px 30px rgba(17, 17, 17, .05);
           backdrop-filter: blur(16px);
+        }
+
+        .productDetailNav.isHeroOverlay {
+          margin-top: -88px;
+          border-color: rgba(17,17,17,.1);
+          background: rgba(255,255,255,.94);
+          box-shadow: 0 -10px 30px rgba(17,17,17,.08);
+          backdrop-filter: blur(18px);
+        }
+
+        .productDetailNav.isHeroOverlay .productDetailNavLinks a {
+          color: #171717;
+        }
+
+        .productDetailNav.isHeroOverlay .productDetailNavSecondary {
+          border-color: #ef7430;
+          color: #d75f21;
         }
 
         .productDetailNavShell {
@@ -193,6 +217,10 @@ export function ProductDetailNav() {
         }
 
         @media (max-width: 900px) {
+          .productDetailNav.isHeroOverlay {
+            margin-top: -76px;
+          }
+
           .productDetailNavShell {
             min-height: 76px;
             padding-inline: 24px;

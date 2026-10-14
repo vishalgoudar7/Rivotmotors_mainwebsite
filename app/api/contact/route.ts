@@ -5,6 +5,7 @@ const requiredFields: Record<string, string[]> = {
   media: ["name", "outlet", "email", "type", "message"], investor: ["name", "company", "email", "phone", "type", "range"],
   careers: ["name", "email", "phone", "position", "cv"], overseas: ["company", "contact", "email", "phone", "country", "business"],
   support: ["name", "email", "message"], contact: ["name", "email", "message"],
+  visit: ["name", "email", "message"],
 };
 
 export async function POST(request: Request) {
