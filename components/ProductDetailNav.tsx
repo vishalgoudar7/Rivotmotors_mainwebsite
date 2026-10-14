@@ -7,6 +7,7 @@ const navigationItems = [
   { id: "performance", label: "Performance" },
   { id: "details", label: "Details" },
   { id: "design", label: "Design" },
+  { id: "engineered", label: "Engineered" },
   { id: "key-features", label: "Key Features" },
   { id: "model-comparison", label: "Compare" },
   { id: "support", label: "Support" },

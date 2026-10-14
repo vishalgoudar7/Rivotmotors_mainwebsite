@@ -1,6 +1,7 @@
 import { Faqs } from "@/components/Faqs";
 import { BackToTopButton } from "@/components/BackToTopButton";
 import { ProductCustomMade } from "@/components/ProductCustomMade";
+import { ProductEngineeringShowcase } from "@/components/ProductEngineeringShowcase";
 import { ProductDesignDetails } from "@/components/ProductDesignDetails";
 import { ProductDetailHero } from "@/components/ProductDetailHero";
 import { ProductDetailNav } from "@/components/ProductDetailNav";
@@ -33,6 +34,8 @@ export function ProModel() {
       <ProductDesignDetails />
 
       <ProductCustomMade modelName="NX100 Pro" image={proImage} imageAlt="RIVOT NX100 Pro scooter colour preview" />
+
+      <ProductEngineeringShowcase />
 
       <ProductKeyFeaturesGallery />
 
@@ -83,7 +86,7 @@ export function ProModel() {
           font-family: inherit;
         }
 
-        .proPage :is(#performance, #details, #design, #key-features, #model-comparison, #support) {
+        .proPage :is(#performance, #details, #design, #engineered, #key-features, #model-comparison, #support) {
           scroll-margin-top: 104px;
         }
 
