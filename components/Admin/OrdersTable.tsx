@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { orderValue, type AdminOrder, type OrdersResult } from "@/app/admin/_lib/orders";
-import { OrdersActions, type OrderExportRow } from "@/components/Admin/OrdersActions";
+import { BookingDownloadButton, OrdersActions, type OrderExportRow } from "@/components/Admin/OrdersActions";
 import { AutoSubmitStatus } from "@/components/Admin/AutoSubmitStatus";
 
 function formatAmount(value: string) {
@@ -90,10 +90,14 @@ export function OrdersTable({
       description: orderValue(order, ["productDescription", "product_description"], productName),
       transactionId,
       customer,
+      email: orderValue(order, ["email", "buyer_email"], "N/A"),
+      address: orderValue(order, ["address", "buyer_address"], "N/A"),
       date: formatDate(orderValue(order, ["created_at", "createdAt", "booking_date", "date"], "N/A")),
       mobile: orderValue(order, ["mobile", "phone", "phone_number", "buyer_phone"], "N/A"),
       city: orderValue(order, ["city", "buyer_city"], "N/A"),
       state: orderValue(order, ["state", "buyer_state"], "N/A"),
+      country: orderValue(order, ["country", "buyer_country"], "India"),
+      pincode: orderValue(order, ["pincode", "postal_code", "zip"], "N/A"),
       status: statusValue,
     };
   });
@@ -138,6 +142,7 @@ export function OrdersTable({
               <th>Mobile Number</th>
               <th>City</th>
               <th>State</th>
+              <th>Booking PDF</th>
             </tr>
           </thead>
           <tbody>
@@ -163,11 +168,12 @@ export function OrdersTable({
                   <td>{row.mobile}</td>
                   <td>{row.city}</td>
                   <td>{row.state}</td>
+                  <td><BookingDownloadButton row={row} /></td>
                 </tr>
               ))
             ) : (
               <tr>
-                <td colSpan={17} className="emptyCell">No orders found.</td>
+                <td colSpan={18} className="emptyCell">No orders found.</td>
               </tr>
             )}
           </tbody>
@@ -287,6 +293,66 @@ export function OrdersTable({
           justify-content: center;
         }
 
+        .ordersSection .bookingPdfButton {
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          gap: 7px;
+          min-width: 158px;
+          min-height: 35px;
+          padding: 0 10px;
+          border: 1px solid rgba(255, 158, 91, .28);
+          border-radius: 8px;
+          background: linear-gradient(135deg, #ff7628, #f7651d);
+          color: #fff;
+          font: inherit;
+          font-size: 13px;
+          font-weight: 800;
+          line-height: 1;
+          white-space: nowrap;
+          box-shadow: 0 7px 18px rgba(255, 93, 18, .14);
+          cursor: pointer;
+          transition: transform .18s ease, box-shadow .18s ease, background .18s ease;
+        }
+
+        .ordersSection .bookingPdfButton svg {
+          width: 16px;
+          height: 16px;
+          flex: none;
+        }
+
+        .ordersSection .bookingPdfButton:hover,
+        .ordersSection .bookingPdfButton:focus-visible {
+          background: linear-gradient(135deg, #ff873d, #f7651d);
+          box-shadow: 0 10px 24px rgba(255, 93, 18, .25);
+          transform: translateY(-2px);
+        }
+
+        .ordersSection .bookingPdfButton:focus-visible {
+          outline: 2px solid #fff;
+          outline-offset: 3px;
+        }
+
+        .ordersSection .bookingPdfButton:active {
+          transform: translateY(0);
+        }
+
+        .ordersSection .bookingPdfButton:disabled,
+        .ordersSection .bookingPdfButton:disabled:hover {
+          border-color: rgba(255,255,255,.11);
+          background: #303030;
+          color: rgba(255,255,255,.48);
+          box-shadow: none;
+          cursor: not-allowed;
+          transform: none;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+          .ordersSection .bookingPdfButton {
+            transition: none;
+          }
+        }
+
         .orderFilterBar {
           display: flex;
           align-items: center;
@@ -375,6 +441,11 @@ export function OrdersTable({
         td:nth-child(17) {
           width: 150px;
           min-width: 150px;
+        }
+
+        th:nth-child(18),
+        td:nth-child(18) {
+          min-width: 180px;
         }
 
         th, td {
