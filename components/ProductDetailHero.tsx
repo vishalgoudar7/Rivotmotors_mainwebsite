@@ -1,7 +1,8 @@
 "use client";
 
-import Image from "next/image";
+import { getImageProps } from "next/image";
 import type { StaticImageData } from "next/image";
+import type { CSSProperties } from "react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { FileText, Play } from "lucide-react";
@@ -26,6 +27,8 @@ type ProductDetailHeroProps = {
   kicker?: string;
   heroImage?: StaticImageData;
   heroImages?: readonly StaticImageData[];
+  mobileHeroImages?: readonly StaticImageData[];
+  mobileHeroPositions?: readonly string[];
 };
 
 export function ProductDetailHero({
@@ -35,12 +38,41 @@ export function ProductDetailHero({
   kicker = "Meet the future",
   heroImage,
   heroImages,
+  mobileHeroImages,
+  mobileHeroPositions,
 }: ProductDetailHeroProps) {
   const [selectedHeroImage, setSelectedHeroImage] = useState(0);
   const hasCustomHero = Boolean(heroImage || heroImages?.length);
   const activeHeroImages = heroImages ?? (heroImage ? [heroImage] : heroCarouselImages);
+  const activeMobileHeroImages = mobileHeroImages ?? activeHeroImages;
   const modelVariant = modelName.replace(/^NX100\s*/i, "").trim().toUpperCase();
+  const mobileHeroPosition = mobileHeroPositions?.[selectedHeroImage] ?? "center center";
   const startingPrice = modelName === "NX100 Pro" ? "₹1,29,000" : "₹1,39,000";
+  const heroImageAlt = `RIVOT ${modelName} hero image ${selectedHeroImage + 1}`;
+  const heroImageClassName = `productDetailHeroImage${hasCustomHero ? " isCustomHero" : ""} isActive`;
+  const heroImageStyle = {
+    "--hero-mobile-position": mobileHeroPosition,
+    objectFit: "cover",
+  } as CSSProperties;
+  const {
+    props: { srcSet: desktopHeroSrcSet, ...desktopHeroProps },
+  } = getImageProps({
+    src: activeHeroImages[selectedHeroImage],
+    alt: heroImageAlt,
+    fill: true,
+    sizes: "100vw",
+    className: heroImageClassName,
+    style: heroImageStyle,
+    fetchPriority: selectedHeroImage === 0 ? "high" : "auto",
+  });
+  const {
+    props: { srcSet: mobileHeroSrcSet },
+  } = getImageProps({
+    src: activeMobileHeroImages[selectedHeroImage] ?? activeHeroImages[selectedHeroImage],
+    alt: heroImageAlt,
+    fill: true,
+    sizes: "100vw",
+  });
 
   useEffect(() => {
     if (activeHeroImages.length <= 1) return;
@@ -57,15 +89,11 @@ export function ProductDetailHero({
       className={`productDetailHero${hasCustomHero ? " hasCustomHero" : ""}`}
       aria-label={`RIVOT ${modelName}`}
     >
-      <Image
-        src={activeHeroImages[selectedHeroImage]}
-        alt={`RIVOT ${modelName} hero image ${selectedHeroImage + 1}`}
-        fill
-        priority={selectedHeroImage === 0}
-        sizes="100vw"
-        className={`productDetailHeroImage${hasCustomHero ? " isCustomHero" : ""} isActive`}
-        key={activeHeroImages[selectedHeroImage].src}
-      />
+      <picture key={activeHeroImages[selectedHeroImage].src}>
+        <source media="(max-width: 560px)" srcSet={mobileHeroSrcSet} />
+        <source media="(min-width: 561px)" srcSet={desktopHeroSrcSet} />
+        <img {...desktopHeroProps} />
+      </picture>
 
       <div className={`productDetailHeroShade${hasCustomHero ? " isCustomHero" : ""}`} aria-hidden="true" />
 
@@ -906,7 +934,7 @@ export function ProductDetailHero({
             margin: 0;
             border: 0;
             border-radius: 0;
-            background: #f5f2ef;
+            background: #080a0b;
             box-shadow: none;
           }
 
@@ -923,22 +951,36 @@ export function ProductDetailHero({
 
           .productDetailHeroImage.isCustomHero,
           .productDetailHeroImage.isCustomHero.isActive {
-            object-position: 72% center;
+            object-position: var(--hero-mobile-position);
             transform: none;
           }
 
-          :global(html[data-rivot-theme="light"]) .productDetailHeroShade,
           .productDetailHeroShade {
             background:
-              linear-gradient(90deg, rgba(255,255,255,.94) 0%, rgba(255,255,255,.72) 25%, rgba(255,255,255,.08) 55%, rgba(255,255,255,.02) 100%),
-              linear-gradient(180deg, rgba(255,255,255,.48) 0%, rgba(255,255,255,.04) 46%, rgba(247,244,239,.9) 100%);
+              linear-gradient(90deg, rgba(3,5,7,.8) 0%, rgba(3,5,7,.48) 34%, rgba(3,5,7,.08) 68%, rgba(3,5,7,.02) 100%),
+              linear-gradient(180deg, rgba(3,5,7,.42) 0%, rgba(3,5,7,.04) 42%, rgba(3,5,7,.82) 100%);
           }
 
-          :global(html[data-rivot-theme="light"]) .productDetailHeroShade.isCustomHero,
           .productDetailHeroShade.isCustomHero {
             background:
-              linear-gradient(90deg, rgba(255,255,255,.96) 0%, rgba(255,255,255,.76) 31%, rgba(255,255,255,.12) 64%, rgba(255,255,255,0) 100%),
-              linear-gradient(180deg, rgba(10,14,18,.14) 0%, rgba(10,14,18,0) 34%, rgba(247,244,239,.72) 100%);
+              linear-gradient(90deg, rgba(3,5,7,.78) 0%, rgba(3,5,7,.46) 34%, rgba(3,5,7,.06) 70%, rgba(3,5,7,0) 100%),
+              linear-gradient(180deg, rgba(3,5,7,.36) 0%, rgba(3,5,7,0) 38%, rgba(3,5,7,.78) 100%);
+          }
+
+          :global(html[data-rivot-theme="light"]) .productDetailHero {
+            background: #f5f2ef;
+          }
+
+          :global(html[data-rivot-theme="light"]) .productDetailHeroShade {
+            background:
+              linear-gradient(90deg, rgba(255,255,255,.84) 0%, rgba(255,255,255,.56) 29%, rgba(255,255,255,.06) 62%, rgba(255,255,255,0) 100%),
+              linear-gradient(180deg, rgba(255,255,255,.3) 0%, rgba(255,255,255,0) 44%, rgba(247,244,239,.76) 100%);
+          }
+
+          :global(html[data-rivot-theme="light"]) .productDetailHeroShade.isCustomHero {
+            background:
+              linear-gradient(90deg, rgba(255,255,255,.86) 0%, rgba(255,255,255,.58) 31%, rgba(255,255,255,.07) 66%, rgba(255,255,255,0) 100%),
+              linear-gradient(180deg, rgba(255,255,255,.26) 0%, rgba(255,255,255,0) 38%, rgba(247,244,239,.74) 100%);
           }
 
           .productDetailHeroContent {
@@ -996,17 +1038,19 @@ export function ProductDetailHero({
             width: 100%;
             max-width: none;
             margin: auto 0 14px;
-            padding: 0;
-            border-top: 1px solid rgba(17, 17, 17, .1);
-            border-bottom: 1px solid rgba(17, 17, 17, .1);
-            background: rgba(255, 255, 255, .38);
-            backdrop-filter: blur(10px);
+            padding: 7px 4px;
+            border: 1px solid rgba(255, 255, 255, .7);
+            border-radius: 15px;
+            background: rgba(255, 255, 255, .58);
+            box-shadow: 0 12px 30px rgba(28, 35, 42, .13), inset 0 1px 0 rgba(255,255,255,.72);
+            backdrop-filter: blur(14px) saturate(1.18);
+            animation: productHeroSpecsMobileIn .7s cubic-bezier(.16, 1, .3, 1) .38s both;
           }
 
           .productDetailHeroSpecs div {
             justify-content: center;
-            min-height: 68px;
-            padding: 9px 4px;
+            min-height: 88px;
+            padding: 7px 3px;
             border-left: 1px solid rgba(17, 17, 17, .11);
           }
 
@@ -1015,7 +1059,20 @@ export function ProductDetailHero({
           }
 
           .productDetailSpecIcon {
-            display: none;
+            display: grid;
+            width: 31px;
+            height: 31px;
+            margin: 0 auto 6px;
+            border: 1px solid rgba(239,116,48,.68);
+            background: rgba(255,255,255,.72);
+            color: #171717;
+            box-shadow: 0 5px 14px rgba(239,116,48,.14);
+            animation: productHeroSpecIconFloat 3s ease-in-out infinite;
+          }
+
+          .productDetailSpecIcon svg {
+            width: 17px;
+            height: 17px;
           }
 
           .productDetailHeroSpecs b {
@@ -1031,6 +1088,38 @@ export function ProductDetailHero({
             line-height: 1.15;
           }
 
+          :global(html[data-rivot-theme="dark"]) .productDetailHeroSpecs,
+          :global(html[data-theme="dark"]) .productDetailHeroSpecs {
+            border-color: rgba(255,255,255,.2);
+            background: rgba(7,10,14,.56);
+            box-shadow: 0 14px 34px rgba(0,0,0,.3), inset 0 1px 0 rgba(255,255,255,.08);
+          }
+
+          :global(html[data-rivot-theme="dark"]) .productDetailHeroSpecs div,
+          :global(html[data-theme="dark"]) .productDetailHeroSpecs div {
+            border-left-color: rgba(255,255,255,.18);
+          }
+
+          :global(html[data-rivot-theme="dark"]) .productDetailHeroSpecs b,
+          :global(html[data-theme="dark"]) .productDetailHeroSpecs b {
+            color: #fff;
+          }
+
+          :global(html[data-rivot-theme="dark"]) .productDetailSpecIcon,
+          :global(html[data-theme="dark"]) .productDetailSpecIcon {
+            border-color: rgba(255,123,53,.82);
+            background: rgba(12,15,18,.82);
+            color: #fff;
+            box-shadow: 0 0 16px rgba(239,116,48,.2);
+          }
+
+          :global(html[data-rivot-theme="dark"]) .productDetailHeroSpecs small,
+          :global(html[data-theme="dark"]) .productDetailHeroSpecs small,
+          :global(html[data-rivot-theme="dark"]) .productDetailHeroNotes,
+          :global(html[data-theme="dark"]) .productDetailHeroNotes {
+            color: rgba(255,255,255,.78);
+          }
+
           .productDetailHeroButtons {
             display: grid;
             grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -1041,7 +1130,7 @@ export function ProductDetailHero({
 
           .productDetailHeroPointers {
             right: auto;
-            bottom: 194px;
+            bottom: 230px;
             left: 50%;
             gap: 6px;
             transform: translateX(-50%);
@@ -1091,6 +1180,16 @@ export function ProductDetailHero({
           .productDetailHeroNotes span:last-child {
             display: none;
           }
+
+          @keyframes productHeroSpecsMobileIn {
+            from { opacity: 0; transform: translateY(22px) scale(.97); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+          }
+
+          @keyframes productHeroSpecIconFloat {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-3px); }
+          }
         }
 
         @media (prefers-reduced-motion: reduce) {
@@ -1101,6 +1200,7 @@ export function ProductDetailHero({
           .productDetailHeroCopy,
           .productDetailHeroSpecs,
           .productDetailHeroSpecs > div,
+          .productDetailSpecIcon,
           .productDetailHeroButtons,
           .productDetailHeroNotes {
             opacity: 1 !important;

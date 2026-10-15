@@ -14,8 +14,12 @@ import proImage from "@/asset/Model/Pro.png";
 import proHeroImageOne from "@/asset/Model/Pro/hero/test.jpg";
 import proHeroImageTwo from "@/asset/Model/Pro/hero/2img.jpg";
 import proHeroImageThree from "@/asset/Model/Pro/hero/3img.png";
+import proMobileHeroImageOne from "@/asset/Model/Pro/hero/mobile/nx100-pro-mobile-01.png";
+import proMobileHeroImageTwo from "@/asset/Model/Pro/hero/mobile/nx100-pro-mobile-02.png";
+import proMobileHeroImageThree from "@/asset/Model/Pro/hero/mobile/nx100-pro-mobile-03.png";
 
 const proHeroImages = [proHeroImageOne, proHeroImageTwo, proHeroImageThree] as const;
+const proMobileHeroImages = [proMobileHeroImageOne, proMobileHeroImageTwo, proMobileHeroImageThree] as const;
 
 export function ProModel() {
   return (
@@ -25,6 +29,7 @@ export function ProModel() {
         headline="Long rides. Heavy loads."
         description="Power for the long road. Space for the long list."
         heroImages={proHeroImages}
+        mobileHeroImages={proMobileHeroImages}
       />
 
       <ProductDetailNav overlayHero />

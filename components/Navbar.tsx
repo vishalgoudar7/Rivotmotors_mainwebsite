@@ -58,7 +58,11 @@ const mobileNavItems = [
 
 export function Navbar() {
   const pathname = usePathname();
-  const usesImageHero = pathname === "/" || Boolean(pathname?.startsWith("/products/"));
+  const usesImageHero =
+    pathname === "/" ||
+    pathname === "/book-now" ||
+    Boolean(pathname?.startsWith("/products/"));
+  const usesProductHero = Boolean(pathname?.startsWith("/products/"));
   const [menuOpen, setMenuOpen] = useState(false);
   const [productsOpen, setProductsOpen] = useState(false);
   const [communityOpen, setCommunityOpen] = useState(false);
@@ -107,7 +111,7 @@ export function Navbar() {
   };
 
   return (
-    <header className={`rivotHeader isHomeHeader${usesImageHero ? " isHeroOverlay" : " isContentHeader"}`}>
+    <header className={`rivotHeader isHomeHeader${usesImageHero ? " isHeroOverlay" : " isContentHeader"}${usesProductHero ? " isProductHeader" : ""}`}>
       <Link href="/" className="rivotBrand" aria-label="Rivot">
         <span className="rivotBrandMark">
           <Image src={logo} alt="RIVOT" priority />
@@ -1484,6 +1488,22 @@ export function Navbar() {
       align-items: center !important;
       padding: env(safe-area-inset-top) 16px 0 !important;
       box-sizing: border-box;
+    }
+
+    .rivotHeader.isHomeHeader.isProductHeader {
+      background: linear-gradient(180deg, rgba(3, 5, 7, .62) 0%, rgba(3, 5, 7, .18) 72%, transparent 100%) !important;
+    }
+
+    html[data-rivot-theme="light"] .rivotHeader.isHomeHeader.isProductHeader {
+      background: linear-gradient(180deg, rgba(255, 255, 255, .82) 0%, rgba(255, 255, 255, .3) 72%, transparent 100%) !important;
+    }
+
+    html[data-rivot-theme="light"] .rivotHeader.isHomeHeader.isProductHeader .rivotBrandMark img {
+      filter: brightness(0) !important;
+    }
+
+    html[data-rivot-theme="light"] .rivotHeader.isHomeHeader.isProductHeader .rivotMenuButton {
+      color: #111 !important;
     }
 
     .rivotHeader.isHomeHeader .rivotBrand {
