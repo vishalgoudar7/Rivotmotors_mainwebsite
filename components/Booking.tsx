@@ -3922,6 +3922,128 @@ export function Booking() {
           }
         }
 
+        /* Restore a readable form scale on the single-column tablet layout. */
+        @media (min-width: 601px) and (max-width: 1050px) {
+          body:has(.rivotBooking) .rivotBookingPanelHeader p,
+          body:has(.rivotBooking) .rivotBookingColors::before,
+          body:has(.rivotBooking) .rivotBookingLead::before {
+            font-size: 20px !important;
+          }
+          body:has(.rivotBooking) .rivotBookingModels button span { font-size: 17px !important; }
+          body:has(.rivotBooking) .rivotBookingModels button small { font-size: 12px !important; }
+          body:has(.rivotBooking) .rivotBookingModels button > em { font-size: 10px !important; }
+          body:has(.rivotBooking) .rivotBookingColors button {
+            width: 38px !important;
+            height: 38px !important;
+            flex-basis: 38px !important;
+          }
+          body:has(.rivotBooking) .rivotBookingFields input,
+          body:has(.rivotBooking) .rivotBookingFields select {
+            min-height: 44px;
+            height: 44px;
+            font-size: 14px !important;
+          }
+          body:has(.rivotBooking) .rivotBookingTerms { font-size: 12px !important; }
+          body:has(.rivotBooking) .rivotBookingPayment > span { font-size: 10px !important; }
+          body:has(.rivotBooking) .rivotBookingSubmit { font-size: 15px !important; }
+        }
+
+        /* Keep the booking form legible and easy to use on phones. */
+        @media (max-width: 600px) {
+          body:has(.rivotBooking) .rivotBookingPanel {
+            padding: 22px 16px 24px;
+          }
+
+          body:has(.rivotBooking) .rivotBookingPanelHeader p,
+          body:has(.rivotBooking) .rivotBookingColors::before,
+          body:has(.rivotBooking) .rivotBookingLead::before {
+            font-size: 18px !important;
+          }
+
+          body:has(.rivotBooking) .rivotBookingModels {
+            gap: 10px;
+          }
+          body:has(.rivotBooking) .rivotBookingModels button {
+            min-width: 0;
+            min-height: 82px;
+            padding: 12px;
+          }
+          body:has(.rivotBooking) .rivotBookingModels button span {
+            font-size: 16px !important;
+          }
+          body:has(.rivotBooking) .rivotBookingModels button small {
+            font-size: 12px !important;
+          }
+          body:has(.rivotBooking) .rivotBookingModels button > em {
+            display: block;
+            font-size: 10px !important;
+          }
+
+          body:has(.rivotBooking) .rivotBookingColors {
+            gap: 10px;
+          }
+          body:has(.rivotBooking) .rivotBookingColors button {
+            width: 38px !important;
+            height: 38px !important;
+            flex-basis: 38px !important;
+          }
+          body:has(.rivotBooking) .rivotBookingColorName {
+            display: grid;
+            min-width: 0;
+          }
+          body:has(.rivotBooking) .rivotBookingColorName b { font-size: 12px; }
+          body:has(.rivotBooking) .rivotBookingColorName small { font-size: 10px; }
+
+          body:has(.rivotBooking) .rivotBookingFields {
+            gap: 10px;
+          }
+          body:has(.rivotBooking) .rivotBookingFields input,
+          body:has(.rivotBooking) .rivotBookingFields select {
+            width: 100%;
+            min-height: 48px;
+            height: 48px;
+            font-size: 16px !important;
+          }
+          body:has(.rivotBooking) .rivotBookingTerms {
+            align-items: flex-start;
+            font-size: 12px !important;
+            line-height: 1.4;
+          }
+          body:has(.rivotBooking) .rivotBookingTerms input {
+            width: 18px !important;
+            height: 18px !important;
+            flex-basis: 18px !important;
+          }
+          body:has(.rivotBooking) .rivotBookingPayment > span {
+            font-size: 10px !important;
+            text-align: right;
+          }
+          body:has(.rivotBooking) .rivotBookingSubmit {
+            min-height: 50px;
+            font-size: 15px !important;
+          }
+        }
+
+        @media (max-width: 420px) {
+          body:has(.rivotBooking) .rivotBookingModels {
+            grid-template-columns: minmax(0, 1fr);
+          }
+          body:has(.rivotBooking) .rivotBookingModels button {
+            min-height: 76px;
+          }
+          body:has(.rivotBooking) .rivotBookingColors {
+            justify-content: flex-start;
+          }
+          body:has(.rivotBooking) .rivotBookingColors > div:first-child {
+            width: 100%;
+          }
+          body:has(.rivotBooking) .rivotBookingColorName {
+            width: 100%;
+            margin-left: 0;
+            text-align: left;
+          }
+        }
+
         @media (prefers-reduced-motion: reduce) {
           body:has(.rivotBooking) .rivotBookingIntro,
           body:has(.rivotBooking) .rivotBookingScooter,

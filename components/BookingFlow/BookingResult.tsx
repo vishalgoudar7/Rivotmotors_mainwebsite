@@ -173,7 +173,6 @@ export function BookingResult({ orderId, failed = false, reason = "" }: { orderI
 
         <div className="bookingResultActions">
           <Link className="bookingResultButton" href="/">Back to Home</Link>
-          <Link className="bookingResultSecondary" href="/products">View Products</Link>
         </div>
       </section>
       <style>{styles}</style>

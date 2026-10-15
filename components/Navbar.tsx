@@ -61,6 +61,7 @@ export function Navbar() {
   const usesImageHero =
     pathname === "/" ||
     pathname === "/book-now" ||
+    pathname === "/test-ride" ||
     Boolean(pathname?.startsWith("/products/"));
   const usesProductHero = Boolean(pathname?.startsWith("/products/"));
   const [menuOpen, setMenuOpen] = useState(false);
@@ -926,6 +927,28 @@ export function Navbar() {
   .rivotHeader.isHomeHeader.isHeroOverlay .rivotCommunityButton[aria-expanded="true"],
   .rivotHeader.isHomeHeader.isHeroOverlay .rivotExploreButton[aria-expanded="true"] {
     color: #ef7430 !important;
+  }
+
+  /* Product heroes use a pale overlay in light mode, unlike the home hero. */
+  html[data-rivot-theme="light"] .rivotHeader.isHomeHeader.isHeroOverlay.isProductHeader .rivotBrandMark img {
+    filter: brightness(0) !important;
+  }
+
+  html[data-rivot-theme="light"] .rivotHeader.isHomeHeader.isHeroOverlay.isProductHeader .rivotHeaderLinks > a,
+  html[data-rivot-theme="light"] .rivotHeader.isHomeHeader.isHeroOverlay.isProductHeader .rivotProductsButton,
+  html[data-rivot-theme="light"] .rivotHeader.isHomeHeader.isHeroOverlay.isProductHeader .rivotCommunityButton,
+  html[data-rivot-theme="light"] .rivotHeader.isHomeHeader.isHeroOverlay.isProductHeader .rivotExploreButton {
+    color: #171717 !important;
+  }
+
+  html[data-rivot-theme="light"] .rivotHeader.isHomeHeader.isHeroOverlay.isProductHeader .rivotHeaderLinks > a:hover,
+  html[data-rivot-theme="light"] .rivotHeader.isHomeHeader.isHeroOverlay.isProductHeader .rivotProductsButton:hover,
+  html[data-rivot-theme="light"] .rivotHeader.isHomeHeader.isHeroOverlay.isProductHeader .rivotCommunityButton:hover,
+  html[data-rivot-theme="light"] .rivotHeader.isHomeHeader.isHeroOverlay.isProductHeader .rivotExploreButton:hover,
+  html[data-rivot-theme="light"] .rivotHeader.isHomeHeader.isHeroOverlay.isProductHeader .rivotProductsButton[aria-expanded="true"],
+  html[data-rivot-theme="light"] .rivotHeader.isHomeHeader.isHeroOverlay.isProductHeader .rivotCommunityButton[aria-expanded="true"],
+  html[data-rivot-theme="light"] .rivotHeader.isHomeHeader.isHeroOverlay.isProductHeader .rivotExploreButton[aria-expanded="true"] {
+    color: #e65c16 !important;
   }
 
   html[data-rivot-theme="light"] .rivotHeader.isHomeHeader .rivotHeaderLinks a:hover,
