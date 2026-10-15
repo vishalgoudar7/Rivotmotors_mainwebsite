@@ -1,6 +1,6 @@
 "use client";
 
-import Image from "next/image";
+import Image, { getImageProps } from "next/image";
 import Link from "next/link";
 import dynamic from "next/dynamic";
 import { useEffect, useRef, useState } from "react";
@@ -8,6 +8,9 @@ import { Leaf, ShieldCheck, Zap } from "lucide-react";
 import heroSpotlightImageOne from "@/asset/newphotos/1.optimized.webp";
 import heroSpotlightImageTwo from "@/asset/newphotos/2.optimized.webp";
 import heroSpotlightImageThree from "@/asset/newphotos/3.optimized.webp";
+import heroSpotlightMobileImageOne from "@/asset/newphotos/mobile/home-hero-mobile-01.png";
+import heroSpotlightMobileImageTwo from "@/asset/newphotos/mobile/home-hero-mobile-02.png";
+import heroSpotlightMobileImageThree from "@/asset/newphotos/mobile/home-hero-mobile-03.png";
 import diagnosticsAppImage from "@/asset/images/App/Diagnostics (2).png";
 import flashChargingAppImage from "@/asset/images/App/Flash Charging.png";
 import geofencingAppImage from "@/asset/images/App/Geofencing.png";
@@ -133,6 +136,12 @@ const heroSpotlightImages = [
   heroSpotlightImageOne,
   heroSpotlightImageTwo,
   heroSpotlightImageThree,
+] as const;
+
+const heroSpotlightMobileImages = [
+  heroSpotlightMobileImageOne,
+  heroSpotlightMobileImageTwo,
+  heroSpotlightMobileImageThree,
 ] as const;
 
 function EngineeringIcon({ type }: { type: string }) {
@@ -526,17 +535,37 @@ export default function Home() {
   return (
     <>
       <section className={`rivotHero ${heroSlideDirection === "previous" ? "isReverse" : "isForward"}`}>
-        {heroSpotlightImages.map((heroImage, index) => (
-          <Image
-            src={heroImage}
-            alt={index === 0 ? "RIVOT NX100 scooter under a dramatic spotlight" : ""}
-            fill
-            priority={index === 0}
-            sizes="100vw"
-            className={`rivotHeroImage${index === selectedHeroImage ? " isActive" : ""}${index === previousHeroImage ? " isPrevious" : ""}`}
-            key={heroImage.src}
-          />
-        ))}
+        {heroSpotlightImages.map((heroImage, index) => {
+          const alt = index === 0 ? "RIVOT NX100 scooter under a dramatic spotlight" : "";
+          const className = `rivotHeroImage${index === selectedHeroImage ? " isActive" : ""}${index === previousHeroImage ? " isPrevious" : ""}`;
+          const {
+            props: { srcSet: desktopSrcSet, ...desktopProps },
+          } = getImageProps({
+            src: heroImage,
+            alt,
+            fill: true,
+            sizes: "100vw",
+            className,
+            style: { objectFit: "cover" },
+            fetchPriority: index === 0 ? "high" : "auto",
+          });
+          const {
+            props: { srcSet: mobileSrcSet },
+          } = getImageProps({
+            src: heroSpotlightMobileImages[index],
+            alt,
+            fill: true,
+            sizes: "100vw",
+          });
+
+          return (
+            <picture key={heroImage.src}>
+              <source media="(max-width: 560px)" srcSet={mobileSrcSet} />
+              <source media="(min-width: 561px)" srcSet={desktopSrcSet} />
+              <img {...desktopProps} />
+            </picture>
+          );
+        })}
         <div className="rivotHeroShade" aria-hidden="true" />
 
         <div className="rivotHeroContent">
@@ -703,7 +732,9 @@ export default function Home() {
           <div className="rivotHeroNotes">
             <strong>Starting at just ₹1,29,000*</strong>
             <span className="rivotHeroSubLine">
-              EMI starting at Rs 3,999/month* <i aria-hidden="true">|</i> Easy Financing Options
+              <span>EMI starting at Rs 3,999/month*</span>
+              <i aria-hidden="true">|</i>
+              <span>Easy Financing Options</span>
             </span>
           </div>
 
@@ -7728,15 +7759,20 @@ export default function Home() {
           }
 
           .rivotHero .rivotHeroSubLine {
-            display: inline-flex !important;
-            align-items: center !important;
-            gap: 10px !important;
-            white-space: nowrap !important;
+            display: flex !important;
+            max-width: 100% !important;
+            flex-direction: column !important;
+            align-items: flex-start !important;
+            gap: 2px !important;
+            white-space: normal !important;
+          }
+
+          .rivotHero .rivotHeroSubLine span {
+            display: block !important;
           }
 
           .rivotHero .rivotHeroSubLine i {
-            font-style: normal !important;
-            color: rgba(255, 255, 255, .8) !important;
+            display: none !important;
           }
 
           .rivotHero .rivotHeroButtons {
@@ -7804,7 +7840,7 @@ export default function Home() {
           }
 
           .rivotHero .rivotHeroSubLine {
-            gap: 8px !important;
+            gap: 2px !important;
           }
         }
 
