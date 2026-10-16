@@ -5,12 +5,12 @@ import Link from "next/link";
 import dynamic from "next/dynamic";
 import { useEffect, useRef, useState } from "react";
 import { Leaf, ShieldCheck, Zap } from "lucide-react";
-import heroSpotlightImageOne from "@/asset/newphotos/1.optimized.webp";
-import heroSpotlightImageTwo from "@/asset/newphotos/2.optimized.webp";
-import heroSpotlightImageThree from "@/asset/newphotos/3.optimized.webp";
-import heroSpotlightMobileImageOne from "@/asset/newphotos/mobile/home-hero-mobile-01.png";
-import heroSpotlightMobileImageTwo from "@/asset/newphotos/mobile/home-hero-mobile-02.png";
-import heroSpotlightMobileImageThree from "@/asset/newphotos/mobile/home-hero-mobile-03.png";
+import heroSpotlightImageOne from "@/asset/newphotos/Herosection/1.webp";
+import heroSpotlightImageTwo from "@/asset/newphotos/Herosection/2.webp";
+import heroSpotlightImageThree from "@/asset/newphotos/Herosection/3.webp";
+import heroSpotlightMobileImageOne from "@/asset/newphotos/Herosection/sm/home-hero-mobile-01.webp";
+import heroSpotlightMobileImageTwo from "@/asset/newphotos/Herosection/sm/home-hero-mobile-02.webp";
+import heroSpotlightMobileImageThree from "@/asset/newphotos/Herosection/sm/home-hero-mobile-03.webp";
 import diagnosticsAppImage from "@/asset/images/App/Diagnostics (2).png";
 import flashChargingAppImage from "@/asset/images/App/Flash Charging.png";
 import geofencingAppImage from "@/asset/images/App/Geofencing.png";
@@ -220,6 +220,7 @@ export default function Home() {
   const [selectedHeroImage, setSelectedHeroImage] = useState(0);
   const [previousHeroImage, setPreviousHeroImage] = useState<number | null>(null);
   const [heroSlideDirection, setHeroSlideDirection] = useState<"next" | "previous">("next");
+  const [heroCarouselReady, setHeroCarouselReady] = useState(false);
   const [keyFeaturesTextVisible, setKeyFeaturesTextVisible] = useState(false);
   const [designTextVisible, setDesignTextVisible] = useState(false);
   const [designDetailsTextVisible, setDesignDetailsTextVisible] = useState(false);
@@ -231,6 +232,24 @@ export default function Home() {
   const [activeProductSection, setActiveProductSection] = useState("key-features");
   const [showBackToTop, setShowBackToTop] = useState(false);
   const [reachVisible, setReachVisible] = useState(false);
+
+  useEffect(() => {
+    let idleTimer: number | undefined;
+    const loadRemainingHeroSlides = () => {
+      idleTimer = window.setTimeout(() => setHeroCarouselReady(true), 600);
+    };
+
+    if (document.readyState === "complete") {
+      loadRemainingHeroSlides();
+    } else {
+      window.addEventListener("load", loadRemainingHeroSlides, { once: true });
+    }
+
+    return () => {
+      window.removeEventListener("load", loadRemainingHeroSlides);
+      if (idleTimer !== undefined) window.clearTimeout(idleTimer);
+    };
+  }, []);
 
   useEffect(() => {
     const heroTimer = window.setInterval(() => {
@@ -536,6 +555,8 @@ export default function Home() {
     <>
       <section className={`rivotHero ${heroSlideDirection === "previous" ? "isReverse" : "isForward"}`}>
         {heroSpotlightImages.map((heroImage, index) => {
+          if (!heroCarouselReady && index !== 0) return null;
+
           const alt = index === 0 ? "RIVOT NX100 scooter under a dramatic spotlight" : "";
           const className = `rivotHeroImage${index === selectedHeroImage ? " isActive" : ""}${index === previousHeroImage ? " isPrevious" : ""}`;
           const {
@@ -548,6 +569,8 @@ export default function Home() {
             className,
             style: { objectFit: "cover" },
             fetchPriority: index === 0 ? "high" : "auto",
+            loading: index === 0 ? "eager" : "lazy",
+            decoding: "async",
           });
           const {
             props: { srcSet: mobileSrcSet },
@@ -746,6 +769,7 @@ export default function Home() {
                 aria-pressed={index === selectedHeroImage}
                 onClick={() => {
                   if (index === selectedHeroImage) return;
+                  setHeroCarouselReady(true);
                   setHeroSlideDirection(index < selectedHeroImage ? "previous" : "next");
                   setPreviousHeroImage(selectedHeroImage);
                   selectedHeroImageRef.current = index;
@@ -827,7 +851,6 @@ export default function Home() {
                   src={feature.image}
                   alt={feature.alt}
                   fill
-                  loading="eager"
                   sizes="(max-width: 768px) 100vw, 28vw"
                   className="rivotKeyCardImage"
                 />
@@ -1368,7 +1391,6 @@ export default function Home() {
                 src="/images/shop/accessories.optimized.webp"
                 alt="RIVOT scooter accessories"
                 fill
-                loading="eager"
                 sizes="(max-width: 760px) 100vw, 33vw"
                 className="rivotBestFitCardImage"
               />
@@ -1385,7 +1407,6 @@ export default function Home() {
                 src="/images/shop/battery.optimized.webp"
                 alt="Battery and motor extended warranty"
                 fill
-                loading="eager"
                 sizes="(max-width: 760px) 100vw, 33vw"
                 className="rivotBestFitCardImage"
               />
@@ -1403,7 +1424,6 @@ export default function Home() {
                 src="/images/shop/smart-care.optimized.webp"
                 alt="Smart Care extended scooter coverage"
                 fill
-                loading="eager"
                 sizes="(max-width: 760px) 100vw, 33vw"
                 className="rivotBestFitCardImage"
               />

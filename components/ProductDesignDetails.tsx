@@ -1,4 +1,7 @@
+"use client";
+
 import Image, { type StaticImageData } from "next/image";
+import { useEffect, useRef, useState } from "react";
 import bootImage from "@/asset/images/Details/Boot space with helmet.png";
 import floorImage from "@/asset/images/Details/Floorboard photo.png";
 import discImage from "@/asset/images/last/Disc.png";
@@ -78,9 +81,41 @@ const proDesignDetails: DetailCard[] = [
 
 export function ProductDesignDetails({ pro = false }: { pro?: boolean }) {
   const details = pro ? proDesignDetails : designDetails;
+  const sectionRef = useRef<HTMLElement>(null);
+  const [revealReady, setRevealReady] = useState(false);
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    const section = sectionRef.current;
+    if (!section) return;
+
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      setIsVisible(true);
+      return;
+    }
+
+    setRevealReady(true);
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.18, rootMargin: "0px 0px -8%" },
+    );
+
+    observer.observe(section);
+    return () => observer.disconnect();
+  }, []);
 
   return (
-    <section className={`productDesignDetails${pro ? " isProDesign" : ""}`} id="details" aria-labelledby="product-design-details-title">
+    <section
+      ref={sectionRef}
+      className={`productDesignDetails${pro ? " isProDesign" : ""}${revealReady ? " isRevealReady" : ""}${isVisible ? " isVisible" : ""}`}
+      id="details"
+      aria-labelledby="product-design-details-title"
+    >
       <div className="productDesignIntro">
         <p>Design</p>
         <h2 id="product-design-details-title">A closer look at what makes it <span>unique.</span></h2>
@@ -128,6 +163,40 @@ export function ProductDesignDetails({ pro = false }: { pro?: boolean }) {
           min-width: 0;
           padding-left: 0;
         }
+
+        .productDesignDetails.isRevealReady .productDesignIntro,
+        .productDesignDetails.isRevealReady .productDesignCard {
+          will-change: opacity, transform, filter;
+          transition:
+            opacity .72s ease,
+            transform .9s cubic-bezier(.16, 1, .3, 1),
+            filter .72s ease;
+        }
+
+        .productDesignDetails.isRevealReady:not(.isVisible) .productDesignIntro {
+          opacity: 0;
+          transform: translate3d(-44px, 0, 0);
+          filter: blur(8px);
+        }
+
+        .productDesignDetails.isRevealReady:not(.isVisible) .productDesignCard {
+          opacity: 0;
+          transform: translate3d(0, 38px, 0) scale(.96);
+          filter: blur(8px);
+        }
+
+        .productDesignDetails.isVisible .productDesignIntro,
+        .productDesignDetails.isVisible .productDesignCard {
+          opacity: 1;
+          transform: translate3d(0, 0, 0) scale(1);
+          filter: blur(0);
+        }
+
+        .productDesignDetails.isRevealReady .productDesignCard:nth-child(1) { transition-delay: .14s; }
+        .productDesignDetails.isRevealReady .productDesignCard:nth-child(2) { transition-delay: .25s; }
+        .productDesignDetails.isRevealReady .productDesignCard:nth-child(3) { transition-delay: .36s; }
+        .productDesignDetails.isRevealReady .productDesignCard:nth-child(4) { transition-delay: .47s; }
+        .productDesignDetails.isRevealReady .productDesignCard:nth-child(5) { transition-delay: .58s; }
 
         .productDesignIntro p {
           display: flex;
@@ -552,6 +621,16 @@ export function ProductDesignDetails({ pro = false }: { pro?: boolean }) {
             min-height: 480px;
           }
 
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+          .productDesignIntro,
+          .productDesignCard {
+            opacity: 1 !important;
+            transform: none !important;
+            filter: none !important;
+            transition: none !important;
+          }
         }
       `}</style>
     </section>
