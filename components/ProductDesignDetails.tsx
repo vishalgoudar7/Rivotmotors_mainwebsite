@@ -4,6 +4,10 @@ import floorImage from "@/asset/images/Details/Floorboard photo.png";
 import discImage from "@/asset/images/last/Disc.png";
 import motorImage from "@/asset/images/last/Motor-card.jpg";
 import sideFootrestImage from "@/asset/models/pro/Left side view.png";
+import proSideFootrestImage from "@/asset/Model/Pro/Design/1.jpeg";
+import proDiscImage from "@/asset/Model/Pro/Design/dual-disc-card-v2.png";
+import proTailLampImage from "@/asset/Model/Pro/Design/3.jpeg";
+import proChargingImage from "@/asset/Model/Pro/Design/Neon Green EV Charging Port.png";
 
 type DetailCard = {
   title: string;
@@ -45,21 +49,50 @@ const designDetails: DetailCard[] = [
   },
 ];
 
-export function ProductDesignDetails() {
+const proDesignDetails: DetailCard[] = [
+  {
+    title: "Premium LED Tail Lamp",
+    copy: "Distinctive rear signature with modern visibility.",
+    image: proTailLampImage,
+    className: "tailLamp",
+  },
+  {
+    title: "Side Footrest",
+    copy: "Added comfort and support for your passenger.",
+    image: proSideFootrestImage,
+    className: "proFootrest",
+  },
+  {
+    title: "Dual Disc Control",
+    copy: "Strong braking confidence for everyday rides.",
+    image: proDiscImage,
+    className: "proDisc",
+  },
+  {
+    title: "Onboard Charging",
+    copy: "Simple, convenient everyday charging.",
+    image: proChargingImage,
+    className: "proCharging",
+  },
+];
+
+export function ProductDesignDetails({ pro = false }: { pro?: boolean }) {
+  const details = pro ? proDesignDetails : designDetails;
+
   return (
-    <section className="productDesignDetails" id="details" aria-labelledby="product-design-details-title">
+    <section className={`productDesignDetails${pro ? " isProDesign" : ""}`} id="details" aria-labelledby="product-design-details-title">
       <div className="productDesignIntro">
-        <p><span>03</span> Design</p>
+        <p>Design</p>
         <h2 id="product-design-details-title">A closer look at what makes it <span>unique.</span></h2>
         <small>Thoughtful details. Everyday comfort. Timeless RIVOT style.</small>
       </div>
 
       <div className="productDesignGrid">
-        {designDetails.map((detail) => (
+        {details.map((detail) => (
           <article className={`productDesignCard ${detail.className}`} key={detail.title}>
             <Image
               src={detail.image}
-              alt={detail.className.includes("footrest") ? "RIVOT scooter side passenger footrest" : ""}
+              alt={`RIVOT NX100 ${detail.title}`}
               fill
               sizes="(max-width: 900px) 100vw, 28vw"
             />
@@ -84,6 +117,11 @@ export function ProductDesignDetails() {
             radial-gradient(circle at 8% 18%, rgba(239, 116, 48, .1), transparent 25%),
             linear-gradient(135deg, #fff 0%, #fafafa 54%, #f1f3f4 100%);
           color: #080808;
+          font-family: inherit;
+        }
+
+        .productDesignDetails :is(h2, h3, p, small) {
+          font-family: inherit;
         }
 
         .productDesignIntro {
@@ -99,14 +137,9 @@ export function ProductDesignDetails() {
           color: #ef7430;
           font-size: 14px;
           font-weight: 800;
-          letter-spacing: .18em;
+          letter-spacing: 0;
           line-height: 1.2;
           text-transform: uppercase;
-        }
-
-        .productDesignIntro p span {
-          letter-spacing: 0;
-          color: inherit;
         }
 
         .productDesignIntro p::after {
@@ -242,11 +275,164 @@ export function ProductDesignDetails() {
           grid-column: span 3;
         }
 
+        .productDesignDetails.isProDesign {
+          grid-template-columns: minmax(300px, .72fr) minmax(0, 1.9fr);
+          gap: clamp(38px, 4vw, 72px);
+          min-height: calc(100svh - 88px);
+          padding: clamp(52px, 5vw, 78px) clamp(30px, 4vw, 68px);
+          background:
+            radial-gradient(ellipse at 10% 4%, rgba(239,116,48,.09), transparent 22%),
+            radial-gradient(ellipse at 78% 100%, rgba(239,116,48,.08), transparent 26%),
+            linear-gradient(135deg, #fff 0%, #fafafa 54%, #f1f3f4 100%);
+          color: #080808;
+          overflow: hidden;
+        }
+
+        .productDesignDetails.isProDesign::before {
+          content: "";
+          position: absolute;
+          inset: auto 0 0;
+          height: 31%;
+          background:
+            linear-gradient(176deg, transparent 0 24%, rgba(17,17,17,.025) 24.3% 24.7%, transparent 25%),
+            radial-gradient(ellipse at 34% 100%, rgba(17,17,17,.04), transparent 32%);
+          opacity: .7;
+          pointer-events: none;
+        }
+
+        .productDesignDetails.isProDesign {
+          position: relative;
+        }
+
+        .isProDesign .productDesignIntro,
+        .isProDesign .productDesignGrid {
+          position: relative;
+          z-index: 1;
+        }
+
+        .isProDesign .productDesignIntro h2 {
+          color: #070707;
+          font-size: clamp(46px, 3.25vw, 62px);
+          line-height: .98;
+          letter-spacing: -.045em;
+        }
+
+        .isProDesign .productDesignIntro small {
+          color: #5f6b73;
+          font-size: 17px;
+        }
+
+        .isProDesign .productDesignGrid {
+          grid-template-columns: minmax(310px, .92fr) minmax(0, 1.12fr) minmax(190px, .8fr);
+          grid-template-rows: minmax(260px, 1fr) minmax(260px, 1fr);
+          gap: 14px;
+          min-height: min(70vh, 700px);
+        }
+
+        .isProDesign .productDesignCard {
+          min-height: 0;
+          border-color: rgba(239,116,48,.72);
+          border-radius: 16px;
+          background: #0b0c0c;
+          box-shadow: 0 18px 50px rgba(0,0,0,.36), inset 0 0 22px rgba(239,116,48,.08);
+        }
+
+        .isProDesign .productDesignCard::after {
+          content: "";
+          position: absolute;
+          inset: -1px;
+          z-index: 3;
+          border-radius: inherit;
+          box-shadow: inset 0 0 12px rgba(255,111,35,.2);
+          pointer-events: none;
+        }
+
+        .isProDesign .productDesignCard img {
+          filter: brightness(.66) contrast(1.22) saturate(.82) sepia(.08);
+          transition: transform .45s ease, filter .35s ease;
+        }
+
+        .isProDesign .productDesignCard:hover img {
+          filter: brightness(.76) contrast(1.18) saturate(.9) sepia(.06);
+        }
+
+        .isProDesign .productDesignCard.tailLamp {
+          grid-column: 1;
+          grid-row: 1 / 3;
+        }
+
+        .isProDesign .productDesignCard.proFootrest {
+          grid-column: 2 / 4;
+          grid-row: 1;
+        }
+
+        .isProDesign .productDesignCard.proDisc {
+          grid-column: 2;
+          grid-row: 2;
+        }
+
+        .isProDesign .productDesignCard.proCharging {
+          grid-column: 3;
+          grid-row: 2;
+        }
+
+        .isProDesign .productDesignCard.tailLamp img {
+          object-position: center 38%;
+        }
+
+        .isProDesign .productDesignCard.proFootrest img {
+          object-position: 60% 63%;
+        }
+
+        .isProDesign .productDesignCard.proDisc img {
+          object-fit: cover;
+          object-position: center;
+          background: #0b0c0c;
+        }
+
+        .isProDesign .productDesignCard.proDisc:hover img {
+          transform: none;
+        }
+
+        .isProDesign .productDesignCard.proCharging img {
+          object-position: 54% 42%;
+        }
+
+        .isProDesign .productDesignShade {
+          background:
+            linear-gradient(180deg, rgba(7,8,8,.2) 0%, rgba(7,8,8,.06) 34%, rgba(2,3,3,.42) 62%, rgba(2,3,3,.96) 100%),
+            radial-gradient(circle at 14% 84%, rgba(239,116,48,.16), transparent 42%),
+            linear-gradient(90deg, rgba(4,5,5,.24), transparent 58%);
+        }
+
+        .isProDesign .productDesignCard div:last-child {
+          padding: clamp(20px, 2vw, 30px);
+        }
+
+        .isProDesign .productDesignCard h3 {
+          max-width: 300px;
+          font-size: clamp(22px, 1.55vw, 29px);
+        }
+
+        .isProDesign .productDesignCard p {
+          max-width: 300px;
+          color: rgba(255,255,255,.86);
+          font-size: 16px;
+        }
+
         html:is([data-theme="dark"], [data-rivot-theme="dark"]) .productDesignDetails {
           background:
             radial-gradient(circle at 12% 8%, rgba(239, 116, 48, .08), transparent 30%),
             linear-gradient(180deg, #080909 0%, #0d0f0f 100%) !important;
           color: #f5f5f2;
+        }
+
+        html:is([data-theme="dark"], [data-rivot-theme="dark"]) .productDesignDetails.isProDesign {
+          background:
+            radial-gradient(ellipse at 10% 4%, rgba(255,255,255,.2), transparent 20%),
+            radial-gradient(ellipse at 78% 100%, rgba(239,116,48,.18), transparent 24%),
+            radial-gradient(ellipse at 18% 82%, rgba(255,255,255,.08), transparent 30%),
+            linear-gradient(118deg, #111314 0%, #050607 43%, #0b0c0d 100%) !important;
         }
 
         html:is([data-theme="dark"], [data-rivot-theme="dark"]) .productDesignIntro h2 {
@@ -259,10 +445,6 @@ export function ProductDesignDetails() {
 
         html:is([data-theme="dark"], [data-rivot-theme="dark"]) .productDesignIntro p {
           color: #ef7430 !important;
-        }
-
-        html:is([data-theme="dark"], [data-rivot-theme="dark"]) .productDesignIntro p span {
-          color: #ef7430;
         }
 
         html:is([data-theme="dark"], [data-rivot-theme="dark"]) .productDesignIntro small {
@@ -305,6 +487,14 @@ export function ProductDesignDetails() {
           .productDesignIntro small {
             max-width: 620px;
           }
+
+          .productDesignDetails.isProDesign {
+            grid-template-columns: 1fr;
+          }
+
+          .isProDesign .productDesignGrid {
+            min-height: 720px;
+          }
         }
 
         @media (max-width: 720px) {
@@ -336,6 +526,30 @@ export function ProductDesignDetails() {
 
           .productDesignIntro h2 {
             font-size: 42px;
+          }
+
+          .productDesignDetails.isProDesign {
+            padding: 52px 14px 58px;
+          }
+
+          .isProDesign .productDesignGrid {
+            display: grid;
+            grid-template-columns: 1fr;
+            grid-template-rows: none;
+            min-height: 0;
+          }
+
+          .isProDesign .productDesignCard.tailLamp,
+          .isProDesign .productDesignCard.proFootrest,
+          .isProDesign .productDesignCard.proDisc,
+          .isProDesign .productDesignCard.proCharging {
+            grid-column: auto;
+            grid-row: auto;
+            min-height: 330px;
+          }
+
+          .isProDesign .productDesignCard.tailLamp {
+            min-height: 480px;
           }
 
         }
