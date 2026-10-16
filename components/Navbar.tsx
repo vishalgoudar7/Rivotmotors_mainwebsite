@@ -117,7 +117,7 @@ export function Navbar() {
     <header className={`rivotHeader isHomeHeader${usesImageHero ? " isHeroOverlay" : " isContentHeader"}${usesProductHero ? " isProductHeader" : ""}${usesProProductHero ? " isProProductHeader" : ""}`}>
       <Link href="/" className="rivotBrand" aria-label="Rivot">
         <span className="rivotBrandMark">
-          <Image src={logo} alt="RIVOT" priority />
+          <Image src={logo} alt="RIVOT" fetchPriority="high" />
         </span>
       </Link>
 
