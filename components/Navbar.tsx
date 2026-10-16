@@ -65,6 +65,7 @@ export function Navbar() {
     pathname === "/test-ride" ||
     Boolean(pathname?.startsWith("/products/"));
   const usesProductHero = Boolean(pathname?.startsWith("/products/"));
+  const usesProProductHero = pathname === "/products/nx100-pro";
   const [menuOpen, setMenuOpen] = useState(false);
   const [productsOpen, setProductsOpen] = useState(false);
   const [communityOpen, setCommunityOpen] = useState(false);
@@ -113,7 +114,7 @@ export function Navbar() {
   };
 
   return (
-    <header className={`rivotHeader isHomeHeader${usesImageHero ? " isHeroOverlay" : " isContentHeader"}${usesProductHero ? " isProductHeader" : ""}`}>
+    <header className={`rivotHeader isHomeHeader${usesImageHero ? " isHeroOverlay" : " isContentHeader"}${usesProductHero ? " isProductHeader" : ""}${usesProProductHero ? " isProProductHeader" : ""}`}>
       <Link href="/" className="rivotBrand" aria-label="Rivot">
         <span className="rivotBrandMark">
           <Image src={logo} alt="RIVOT" priority />
@@ -918,6 +919,37 @@ export function Navbar() {
   html[data-rivot-theme="light"] .rivotHeader.isHomeHeader.isHeroOverlay .rivotMenuButton,
   .rivotHeader.isHomeHeader.isHeroOverlay .rivotMenuButton {
     color: #fff !important;
+  }
+
+  html[data-rivot-theme="light"] .rivotHeader.isHomeHeader.isProductHeader .rivotBrandMark img {
+    filter: brightness(0) !important;
+  }
+
+  html[data-rivot-theme="light"] .rivotHeader.isHomeHeader.isProductHeader .rivotHeaderLinks a,
+  html[data-rivot-theme="light"] .rivotHeader.isHomeHeader.isProductHeader .rivotProductsButton,
+  html[data-rivot-theme="light"] .rivotHeader.isHomeHeader.isProductHeader .rivotCommunityButton,
+  html[data-rivot-theme="light"] .rivotHeader.isHomeHeader.isProductHeader .rivotExploreButton,
+  html[data-rivot-theme="light"] .rivotHeader.isHomeHeader.isProductHeader .rivotMenuButton {
+    color: #111 !important;
+  }
+
+  html[data-rivot-theme="light"] .rivotHeader.isHomeHeader.isProductHeader.isProProductHeader .rivotBrandMark img {
+    filter: brightness(0) invert(1) !important;
+  }
+
+  html[data-rivot-theme="light"] .rivotHeader.isHomeHeader.isProductHeader.isProProductHeader .rivotHeaderLinks a,
+  html[data-rivot-theme="light"] .rivotHeader.isHomeHeader.isProductHeader.isProProductHeader .rivotProductsButton,
+  html[data-rivot-theme="light"] .rivotHeader.isHomeHeader.isProductHeader.isProProductHeader .rivotCommunityButton,
+  html[data-rivot-theme="light"] .rivotHeader.isHomeHeader.isProductHeader.isProProductHeader .rivotExploreButton,
+  html[data-rivot-theme="light"] .rivotHeader.isHomeHeader.isProductHeader.isProProductHeader .rivotMenuButton {
+    color: rgba(255, 255, 255, .94) !important;
+  }
+
+  html[data-rivot-theme="light"] .rivotHeader.isHomeHeader.isProductHeader.isProProductHeader .rivotHeaderLinks a:hover,
+  html[data-rivot-theme="light"] .rivotHeader.isHomeHeader.isProductHeader.isProProductHeader .rivotProductsButton:hover,
+  html[data-rivot-theme="light"] .rivotHeader.isHomeHeader.isProductHeader.isProProductHeader .rivotCommunityButton:hover,
+  html[data-rivot-theme="light"] .rivotHeader.isHomeHeader.isProductHeader.isProProductHeader .rivotExploreButton:hover {
+    color: #ef7430 !important;
   }
 
   .rivotHeader.isHomeHeader.isHeroOverlay .rivotHeaderLinks a:hover,

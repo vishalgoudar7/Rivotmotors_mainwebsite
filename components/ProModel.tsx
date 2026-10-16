@@ -36,7 +36,7 @@ export function ProModel() {
 
       <ProductPerformanceBand modelName="NX100 Pro" />
 
-      <ProductDesignDetails pro />
+      <ProductDesignDetails />
 
       <ProductCustomMade modelName="NX100 Pro" image={proImage} imageAlt="RIVOT NX100 Pro scooter colour preview" />
 

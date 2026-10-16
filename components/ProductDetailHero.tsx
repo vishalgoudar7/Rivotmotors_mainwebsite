@@ -6,18 +6,23 @@ import type { CSSProperties } from "react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { FileText, Play } from "lucide-react";
-import heroFeatureDark from "@/asset/images/Hero/1 (3).png";
-import heroFeatureLight from "@/asset/images/Hero/3 (3).png";
 import heroFeatureStudio from "@/asset/images/Hero/ChatGPT Image Aug 26, 2026, 03_15_38 PM.png";
 import heroFolderDark from "@/asset/images/Hero/Hero1.png";
 import heroFolderLight from "@/asset/images/Hero/Hero2.png";
+import sportHeroMobileOne from "@/asset/images/Hero/mobile/sport-hero-mobile-01.png";
+import sportHeroMobileTwo from "@/asset/images/Hero/mobile/sport-hero-mobile-02.png";
+import sportHeroMobileThree from "@/asset/images/Hero/mobile/sport-hero-mobile-03.png";
 
 const heroCarouselImages = [
-  heroFeatureDark,
   heroFeatureStudio,
-  heroFeatureLight,
   heroFolderDark,
   heroFolderLight,
+] as const;
+
+const sportMobileHeroImages = [
+  sportHeroMobileOne,
+  sportHeroMobileTwo,
+  sportHeroMobileThree,
 ] as const;
 
 type ProductDetailHeroProps = {
@@ -44,7 +49,7 @@ export function ProductDetailHero({
   const [selectedHeroImage, setSelectedHeroImage] = useState(0);
   const hasCustomHero = Boolean(heroImage || heroImages?.length);
   const activeHeroImages = heroImages ?? (heroImage ? [heroImage] : heroCarouselImages);
-  const activeMobileHeroImages = mobileHeroImages ?? activeHeroImages;
+  const activeMobileHeroImages = mobileHeroImages ?? (hasCustomHero ? activeHeroImages : sportMobileHeroImages);
   const modelVariant = modelName.replace(/^NX100\s*/i, "").trim().toUpperCase();
   const mobileHeroPosition = mobileHeroPositions?.[selectedHeroImage] ?? "center center";
   const startingPrice = modelName === "NX100 Pro" ? "₹1,29,000" : "₹1,39,000";

@@ -2,11 +2,6 @@
 
 import Image, { type StaticImageData } from "next/image";
 import { useEffect, useRef, useState } from "react";
-import bootImage from "@/asset/images/Details/Boot space with helmet.png";
-import floorImage from "@/asset/images/Details/Floorboard photo.png";
-import discImage from "@/asset/images/last/Disc.png";
-import motorImage from "@/asset/images/last/Motor-card.jpg";
-import sideFootrestImage from "@/asset/models/pro/Left side view.png";
 import proSideFootrestImage from "@/asset/Model/Pro/Design/1.jpeg";
 import proDiscImage from "@/asset/Model/Pro/Design/dual-disc-card-v2.png";
 import proTailLampImage from "@/asset/Model/Pro/Design/3.jpeg";
@@ -18,39 +13,6 @@ type DetailCard = {
   image: StaticImageData;
   className: string;
 };
-
-const designDetails: DetailCard[] = [
-  {
-    title: "Two tone seat",
-    copy: "Improved ergonomics and comfort.",
-    image: bootImage,
-    className: "seat",
-  },
-  {
-    title: "Dual disc control",
-    copy: "Confidence when traffic changes.",
-    image: discImage,
-    className: "wheel",
-  },
-  {
-    title: "Side Footrest",
-    copy: "Added comfort and support for your passenger.",
-    image: sideFootrestImage,
-    className: "mirror footrest",
-  },
-  {
-    title: "New grab handle",
-    copy: "Hold on tight.",
-    image: floorImage,
-    className: "grab",
-  },
-  {
-    title: "Protected drivetrain",
-    copy: "Built for dust, water, and daily use.",
-    image: motorImage,
-    className: "drive",
-  },
-];
 
 const proDesignDetails: DetailCard[] = [
   {
@@ -79,8 +41,8 @@ const proDesignDetails: DetailCard[] = [
   },
 ];
 
-export function ProductDesignDetails({ pro = false }: { pro?: boolean }) {
-  const details = pro ? proDesignDetails : designDetails;
+export function ProductDesignDetails() {
+  const details = proDesignDetails;
   const sectionRef = useRef<HTMLElement>(null);
   const [revealReady, setRevealReady] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
@@ -112,7 +74,7 @@ export function ProductDesignDetails({ pro = false }: { pro?: boolean }) {
   return (
     <section
       ref={sectionRef}
-      className={`productDesignDetails${pro ? " isProDesign" : ""}${revealReady ? " isRevealReady" : ""}${isVisible ? " isVisible" : ""}`}
+      className={`productDesignDetails isProDesign${revealReady ? " isRevealReady" : ""}${isVisible ? " isVisible" : ""}`}
       id="details"
       aria-labelledby="product-design-details-title"
     >

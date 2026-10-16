@@ -1,8 +1,8 @@
 import Image, { type StaticImageData } from "next/image";
-import accelerationImage from "@/asset/images/last/accelaration.png";
+import accelerationImage from "@/asset/newimg/performance/accelaration.jpeg";
 import rangeImage from "@/asset/images/last/IDC Range.jpeg";
-import discImage from "@/asset/images/last/Disc.png";
-import monoshockImage from "@/asset/images/last/Monoshock.png";
+import discImage from "@/asset/newimg/Engineering/disccc.jpeg";
+import monoshockImage from "@/asset/newimg/Engineering/mono shock.jpeg";
 import motorImage from "@/asset/images/last/Motor-card.jpg";
 import riderAssistanceImage from "@/asset/newimg/Key feuture/Smart ride.jpeg";
 import featureImage from "@/asset/newimg/Key feuture/Built-In Innovation.jpeg";
