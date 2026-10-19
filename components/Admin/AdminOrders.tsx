@@ -29,8 +29,6 @@ export function AdminOrders({
           <Link className="isActive" href="/admin/orders"><Package aria-hidden="true" />Orders</Link>
           <Link href="/admin/blogs"><FileText aria-hidden="true" />Blog Management</Link>
           <Link href="/admin/forum"><MessageSquare aria-hidden="true" />Forum Management</Link>
-          <Link href="/admin/forum/categories"><MessageSquare aria-hidden="true" />Forum Categories</Link>
-          <Link href="/admin/forum/replies"><MessageSquare aria-hidden="true" />Forum Replies</Link>
           <span>System</span>
           <Link href="/admin/settings"><Settings aria-hidden="true" />Settings</Link>
           <span>Authentication</span>

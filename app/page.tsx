@@ -11,26 +11,26 @@ import heroSpotlightImageThree from "@/asset/newphotos/Herosection/3.webp";
 import heroSpotlightMobileImageOne from "@/asset/newphotos/Herosection/sm/home-hero-mobile-01.webp";
 import heroSpotlightMobileImageTwo from "@/asset/newphotos/Herosection/sm/home-hero-mobile-02.webp";
 import heroSpotlightMobileImageThree from "@/asset/newphotos/Herosection/sm/home-hero-mobile-03.webp";
-import diagnosticsAppImage from "@/asset/images/App/Diagnostics (2).png";
-import flashChargingAppImage from "@/asset/images/App/Flash Charging.png";
-import geofencingAppImage from "@/asset/images/App/Geofencing.png";
-import tpmsAppImage from "@/asset/images/App/TPMS (Tire Pressure Monitoring System).png";
-import tripInsightsAppImage from "@/asset/images/App/Trip Insights.png";
+import diagnosticsAppImage from "@/asset/images/App/Diagnostics (2).webp";
+import flashChargingAppImage from "@/asset/images/App/Flash Charging.webp";
+import geofencingAppImage from "@/asset/images/App/Geofencing.webp";
+import tpmsAppImage from "@/asset/images/App/TPMS (Tire Pressure Monitoring System).webp";
+import tripInsightsAppImage from "@/asset/images/App/Trip Insights.webp";
 import accelerationImage from "@/asset/newimg/performance/accelaration.jpeg";
 import recoEngineImage from "@/asset/newimg/performance/recoengine.jpeg";
 import chargerImage from "@/asset/images/last/Charger.optimized.webp";
-import boostModeImage from "@/asset/newimg/Engineering/boost-mode.png";
+import boostModeImage from "@/asset/newimg/Engineering/boost-mode.webp";
 import cruiseImage from "@/asset/newimg/Engineering/cuise.jpeg";
 import discImage from "@/asset/newimg/Engineering/disccc.jpeg";
 import allTestsClearedImage from "@/asset/newimg/Engineering/All test cleared.optimized.jpg";
 import monoshockImage from "@/asset/newimg/Engineering/mono shock.jpeg";
 import motorImage from "@/asset/images/last/Motor-card.jpg";
-import riderAssistanceImage from "@/asset/newimg/Key feuture/Smart ride.jpeg";
-import featureImage from "@/asset/newimg/Key feuture/Built-In Innovation.jpeg";
-import safetyImage from "@/asset/newimg/Key feuture/Advanced Safety.jpeg";
-import ergonomicSeatImage from "@/asset/newimg/Design/erogonomy seat .png";
-import floorboardDetailImage from "@/asset/newimg/Design/Footfloor.jpeg";
-import bootSpaceImage from "@/asset/newimg/Design/bootspace.jpeg";
+import riderAssistanceImage from "@/asset/newimg/Key feuture/Smart ride.webp";
+import featureImage from "@/asset/newimg/Key feuture/Built-In Innovation.webp";
+import safetyImage from "@/asset/newimg/Key feuture/Advanced Safety.webp";
+import ergonomicSeatImage from "@/asset/newimg/Design/erogonomy seat .webp";
+import floorboardDetailImage from "@/asset/newimg/Design/Footfloor.webp";
+import bootSpaceImage from "@/asset/newimg/Design/bootspace.webp";
 import { bookingColors } from "@/data/bookingColors";
 
 const DashboardRotation = dynamic(() => import("@/components/DashboardRotation").then((module) => module.DashboardRotation));
@@ -1387,53 +1387,26 @@ export default function Home() {
 
           <div className="rivotBestFitGrid">
             <article className="rivotBestFitCard rivotBestFitAccessories">
-              <Image
-                src="/images/shop/accessories.optimized.webp"
-                alt="RIVOT scooter accessories"
-                fill
-                sizes="(max-width: 760px) 100vw, 33vw"
-                className="rivotBestFitCardImage"
-              />
+              <Image src="/images/shop/accessories.optimized.webp" alt="RIVOT scooter accessories" fill sizes="(max-width: 760px) 100vw, 33vw" className="rivotBestFitCardImage" />
               <h3>Accessories</h3>
               <p>There's more under the hood.</p>
-
-              <Link href="/merchandise" className="rivotBestFitCta">
-                Shop accessories <span aria-hidden="true">{"\u2192"}</span>
-              </Link>
+              <Link href="/merchandise" className="rivotBestFitCta">Shop accessories <span aria-hidden="true">{"\u2192"}</span></Link>
             </article>
 
             <Link href="/legal/warranty" className="rivotBestFitCard" aria-label="View RIVOT extended warranty">
-              <Image
-                src="/images/shop/battery.optimized.webp"
-                alt="Battery and motor extended warranty"
-                fill
-                sizes="(max-width: 760px) 100vw, 33vw"
-                className="rivotBestFitCardImage"
-              />
+              <Image src="/images/shop/battery.optimized.webp" alt="Battery and motor extended warranty" fill sizes="(max-width: 760px) 100vw, 33vw" className="rivotBestFitCardImage" />
               <p className="rivotBestFitEyebrow rivotBestFitGreen">Extended Warranty</p>
               <h3>Battery + Motor</h3>
               <p>Engineered for a longer, smarter ride.</p>
-
-              <span className="rivotBestFitCta">
-                Explore more
-              </span>
+              <span className="rivotBestFitCta">Explore more</span>
             </Link>
 
             <article className="rivotBestFitCard rivotBestFitSubscription">
-              <Image
-                src="/images/shop/smart-care.optimized.webp"
-                alt="Smart Care extended scooter coverage"
-                fill
-                sizes="(max-width: 760px) 100vw, 33vw"
-                className="rivotBestFitCardImage"
-              />
+              <Image src="/images/shop/smart-care.optimized.webp" alt="Smart Care extended scooter coverage" fill sizes="(max-width: 760px) 100vw, 33vw" className="rivotBestFitCardImage" />
               <p className="rivotBestFitEyebrow rivotBestFitBlue">Subscription</p>
               <h3>Smart Care</h3>
               <p>Extended Warranty &amp; Care for your Simple Scooters.</p>
-
-              <Link href="/legal/subscriptions" className="rivotBestFitCta">
-                Explore more
-              </Link>
+              <Link href="/legal/subscriptions" className="rivotBestFitCta">Explore more</Link>
             </article>
           </div>
         </div>
@@ -8140,6 +8113,7 @@ export default function Home() {
             width: 100%;
           }
         }
+
       `}</style>
     </>
   );

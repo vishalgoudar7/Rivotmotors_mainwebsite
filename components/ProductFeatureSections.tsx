@@ -4,9 +4,9 @@ import rangeImage from "@/asset/images/last/IDC Range.jpeg";
 import discImage from "@/asset/newimg/Engineering/disccc.jpeg";
 import monoshockImage from "@/asset/newimg/Engineering/mono shock.jpeg";
 import motorImage from "@/asset/images/last/Motor-card.jpg";
-import riderAssistanceImage from "@/asset/newimg/Key feuture/Smart ride.jpeg";
-import featureImage from "@/asset/newimg/Key feuture/Built-In Innovation.jpeg";
-import safetyImage from "@/asset/newimg/Key feuture/Advanced Safety.jpeg";
+import riderAssistanceImage from "@/asset/newimg/Key feuture/Smart ride.webp";
+import featureImage from "@/asset/newimg/Key feuture/Built-In Innovation.webp";
+import safetyImage from "@/asset/newimg/Key feuture/Advanced Safety.webp";
 
 const keyFeatures = [
   {

@@ -18,8 +18,6 @@ export function AdminShell({ active, title, description, children }: { active: s
           {item("/admin/orders", "Orders", Package, "orders")}
           {item("/admin/blogs", "Blog Management", FileText, "blogs")}
           {item("/admin/forum", "Forum Management", MessageSquare, "forum")}
-          {item("/admin/forum/categories", "Forum Categories", MessageSquare, "forum-categories")}
-          {item("/admin/forum/replies", "Forum Replies", MessageSquare, "forum-replies")}
           <span>Settings</span>
           {item("/admin/settings#users", "Add Users", UserPlus, "users")}
           {item("/admin/settings#account", "Name / Login Email", UserRound, "account")}
