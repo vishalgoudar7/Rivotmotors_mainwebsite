@@ -1,69 +1,115 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
-import chargerImage from "@/asset/images/last/Charger.optimized.webp";
+import { useEffect, useRef, useState } from "react";
+import chargingBackground from "@/asset/rivot_support_background_images (1)/rivot-charging-background.webp";
+import storeBackground from "@/asset/rivot_support_background_images (1)/rivot-store-background.webp";
 
-export function ProductDetailSupportSections() {
+export function ProductDetailSupportSections({ includeBestFit = true }: { includeBestFit?: boolean }) {
+  const supportSectionRef = useRef<HTMLElement>(null);
+  const [supportVisible, setSupportVisible] = useState(false);
+
+  useEffect(() => {
+    const section = supportSectionRef.current;
+    if (!section) return;
+
+    if (!("IntersectionObserver" in window)) {
+      setSupportVisible(true);
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (!entry.isIntersecting) return;
+        setSupportVisible(true);
+        observer.disconnect();
+      },
+      { threshold: 0.14, rootMargin: "0px 0px -8%" },
+    );
+
+    observer.observe(section);
+    return () => observer.disconnect();
+  }, []);
+
   return (
     <>
-      <section className="rivotReach" id="support" aria-label="RIVOT access network">
-        <div className="rivotReachPanel">
-          <article className="rivotReachCard rivotReachStore">
-            <div className="rivotReachCopy">
-              <span className="rivotReachIcon" aria-hidden="true">
-                <svg viewBox="0 0 40 40" fill="none">
-                  <path d="M9 17L12 8H28L31 17" stroke="currentColor" strokeWidth="2.4" strokeLinejoin="round" />
-                  <path d="M11 17V32H29V17" stroke="currentColor" strokeWidth="2.4" strokeLinejoin="round" />
-                  <path d="M16 32V23H24V32" stroke="currentColor" strokeWidth="2.4" strokeLinejoin="round" />
-                  <path d="M7 17H33" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" />
-                </svg>
-              </span>
-              <p>RIVOT Stores</p>
-              <h2>
-                Always
-                <br />
-                within reach.
-              </h2>
-              <small>Find your nearest RIVOT store and experience the NX100.</small>
-              <Link href="/book-now" className="rivotReachArrow" aria-label="Find a RIVOT store">
-                <b>Find a Store</b>
-                <span aria-hidden="true">{"\u2192"}</span>
-              </Link>
+      <section
+        ref={supportSectionRef}
+        className={`rivotSupport rivotSupportAnimated${supportVisible ? " isVisible" : ""}`}
+        id="support"
+        aria-labelledby="rivot-support-title"
+      >
+        <div className="rivotSupportShell">
+          <div className="rivotSupportIntro">
+            <div className="rivotSupportLead">
+              <h2 id="rivot-support-title">Here for <em>every ride.</em></h2>
+              <p>From showroom to charging and beyond — RIVOT is with you at every step of your journey.</p>
             </div>
-            <div className="rivotReachMedia" aria-hidden="true">
-              <Image src="/images/last/Showroom.avif" alt="" fill sizes="(max-width: 900px) 100vw, 390px" />
-            </div>
-          </article>
 
-          <article className="rivotReachCard rivotReachCharge">
-            <div className="rivotReachCopy">
-              <span className="rivotReachIcon" aria-hidden="true">
-                <svg viewBox="0 0 40 40" fill="none">
-                  <path d="M13 6H25C27.21 6 29 7.79 29 10V34H13V6Z" stroke="currentColor" strokeWidth="2.4" strokeLinejoin="round" />
-                  <path d="M17 12H25" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" />
-                  <path d="M29 14H32C33.1 14 34 14.9 34 16V25C34 26.66 32.66 28 31 28H29" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" />
-                  <path d="M20 19L17 25H22L19 31" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" />
-                </svg>
-              </span>
-              <p>RIVOT Charging Network</p>
-              <h2>
-                Power,
-                <br />
-                everywhere.
-              </h2>
-              <small>India&apos;s most reliable EV charging network for every RIVOT ride.</small>
-              <Link href="/products" className="rivotReachArrow" aria-label="Explore RIVOT charging network">
-                <b>Find a Charger</b>
-                <span aria-hidden="true">{"\u2192"}</span>
-              </Link>
+            <div className="rivotSupportBenefits" aria-label="RIVOT support benefits">
+              <article>
+                <span><svg viewBox="0 0 32 32" fill="none"><circle cx="16" cy="10" r="4.5"/><path d="M7.5 26c.6-5.2 3.5-8 8.5-8s7.9 2.8 8.5 8"/></svg></span>
+                <div><h3>Expert guidance</h3><p>Get the right advice from EV specialists.</p></div>
+              </article>
+              <article>
+                <span><svg viewBox="0 0 32 32" fill="none"><path d="M18 3 9 17h7l-2 12 9-15h-7l2-11Z"/></svg></span>
+                <div><h3>Charging access</h3><p>Tap into a growing charging network.</p></div>
+              </article>
+              <article>
+                <span><svg viewBox="0 0 32 32" fill="none"><path d="M24 13c0 6-8 15-8 15S8 19 8 13a8 8 0 1 1 16 0Z"/><circle cx="16" cy="13" r="2.5"/></svg></span>
+                <div><h3>Nationwide support</h3><p>Service and care across India.</p></div>
+              </article>
+              <article>
+                <span><svg viewBox="0 0 32 32" fill="none"><path d="M7 17v-3a9 9 0 0 1 18 0v3"/><rect x="4" y="16" width="5" height="9" rx="2"/><rect x="23" y="16" width="5" height="9" rx="2"/><path d="M23 25c-1 3-3 4-7 4"/></svg></span>
+                <div><h3>Quick assistance</h3><p>Real help, when you need it.</p></div>
+              </article>
             </div>
-            <div className="rivotReachMedia" aria-hidden="true">
-              <Image src={chargerImage} alt="" fill sizes="(max-width: 900px) 100vw, 390px" />
-            </div>
-          </article>
+          </div>
+
+          <div className="rivotSupportCards">
+            <article className="rivotSupportCard rivotSupportStore">
+              <div className="rivotSupportImage">
+                <Image src={storeBackground} alt="RIVOT electric scooters inside a RIVOT showroom" fill sizes="(max-width: 900px) 100vw, 50vw" />
+              </div>
+              <div className="rivotSupportCardBody">
+                <div className="rivotSupportCardCopy">
+                  <p className="rivotSupportEyebrow">RIVOT Stores</p>
+                  <h3>Visit a <em>RIVOT</em> store</h3>
+                  <p>Experience our electric scooters up close. Get expert guidance, book a test ride, and explore the full range.</p>
+                  <Link href="/book-now" className="rivotSupportCta">Find a store <span aria-hidden="true">→</span></Link>
+                </div>
+                <ul>
+                  <li><span aria-hidden="true">◎</span> Explore the range</li>
+                  <li><span aria-hidden="true">▣</span> Book a test ride</li>
+                  <li><span aria-hidden="true">♙</span> Get expert advice</li>
+                </ul>
+              </div>
+            </article>
+
+            <article className="rivotSupportCard rivotSupportCharge">
+              <div className="rivotSupportImage">
+                <Image src={chargingBackground} alt="RIVOT flashCharge charging station" fill sizes="(max-width: 900px) 100vw, 50vw" />
+              </div>
+              <div className="rivotSupportCardBody">
+                <div className="rivotSupportCardCopy">
+                  <p className="rivotSupportEyebrow">Charging Network</p>
+                  <h3>Charge with confidence</h3>
+                  <p>Access a growing network of RIVOT flashCharge stations across key cities and highways.</p>
+                  <Link href="/products" className="rivotSupportCta">Explore charging network <span aria-hidden="true">→</span></Link>
+                </div>
+                <ul>
+                  <li><span aria-hidden="true">⌖</span> Find charging stations</li>
+                  <li><span aria-hidden="true">ϟ</span> Fast &amp; reliable charging</li>
+                  <li><span aria-hidden="true">◇</span> Coverage across India</li>
+                </ul>
+              </div>
+            </article>
+          </div>
         </div>
       </section>
 
-      <section className="rivotBestFit" aria-labelledby="best-fit-title">
+      {includeBestFit ? <section className="rivotBestFit" aria-labelledby="best-fit-title">
         <div className="rivotBestFitShell">
           <div className="rivotBestFitHeader">
             <h2 id="best-fit-title">A best fit for your Scooter</h2>
@@ -99,9 +145,335 @@ export function ProductDetailSupportSections() {
             </article>
           </div>
         </div>
-      </section>
+      </section> : null}
 
       <style>{`
+        .rivotSupport {
+          position: relative;
+          display: flex;
+          min-height: calc(100svh - 84px);
+          align-items: center;
+          padding: clamp(30px, 4vh, 48px) clamp(20px, 3.5vw, 58px);
+          overflow: hidden;
+          background:
+            radial-gradient(circle at 88% 10%, color-mix(in srgb, var(--accent) 8%, transparent), transparent 30%),
+            linear-gradient(135deg, var(--bg) 0%, color-mix(in srgb, var(--bg) 92%, var(--surface) 8%) 54%, var(--bg) 100%);
+          color: var(--text);
+        }
+
+        .rivotSupport::before {
+          content: "";
+          position: absolute;
+          inset: 0;
+          background:
+            linear-gradient(118deg, transparent 0 22%, color-mix(in srgb, var(--surface) 46%, transparent) 22.1% 41%, transparent 41.1%),
+            linear-gradient(135deg, transparent 0 73%, color-mix(in srgb, var(--border) 30%, transparent) 73.1%, transparent 93%);
+          pointer-events: none;
+        }
+
+        .rivotSupportShell {
+          position: relative;
+          width: min(100%, 1540px);
+          margin: 0 auto;
+        }
+
+        .rivotSupportAnimated .rivotSupportLead,
+        .rivotSupportAnimated .rivotSupportBenefits article,
+        .rivotSupportAnimated .rivotSupportCard {
+          opacity: 0;
+          will-change: transform, opacity;
+          transition:
+            opacity .72s cubic-bezier(.22, 1, .36, 1),
+            transform .82s cubic-bezier(.22, 1, .36, 1);
+        }
+
+        .rivotSupportAnimated .rivotSupportLead { transform: translate3d(-42px, 18px, 0); }
+        .rivotSupportAnimated .rivotSupportBenefits article { transform: translate3d(0, 30px, 0); }
+        .rivotSupportAnimated .rivotSupportCard:first-child { transform: translate3d(-48px, 36px, 0); }
+        .rivotSupportAnimated .rivotSupportCard:last-child { transform: translate3d(48px, 36px, 0); }
+
+        .rivotSupportAnimated.isVisible :is(.rivotSupportLead, .rivotSupportBenefits article, .rivotSupportCard) {
+          opacity: 1;
+          transform: translate3d(0, 0, 0);
+        }
+
+        .rivotSupportAnimated .rivotSupportBenefits article:nth-child(1) { transition-delay: .1s; }
+        .rivotSupportAnimated .rivotSupportBenefits article:nth-child(2) { transition-delay: .17s; }
+        .rivotSupportAnimated .rivotSupportBenefits article:nth-child(3) { transition-delay: .24s; }
+        .rivotSupportAnimated .rivotSupportBenefits article:nth-child(4) { transition-delay: .31s; }
+        .rivotSupportAnimated .rivotSupportCard:first-child { transition-delay: .24s; }
+        .rivotSupportAnimated .rivotSupportCard:last-child { transition-delay: .36s; }
+
+        @media (prefers-reduced-motion: reduce) {
+          .rivotSupportAnimated :is(.rivotSupportLead, .rivotSupportBenefits article, .rivotSupportCard) {
+            opacity: 1;
+            transform: none;
+            transition: none;
+          }
+        }
+
+        .rivotSupportIntro {
+          display: grid;
+          grid-template-columns: minmax(420px, .95fr) minmax(680px, 1.25fr);
+          gap: clamp(34px, 5vw, 80px);
+          align-items: end;
+          margin-bottom: clamp(22px, 3vh, 34px);
+        }
+
+        .rivotSupportLead h2 {
+          margin: 0;
+          color: var(--text);
+          font-size: clamp(44px, 4vw, 64px);
+          font-weight: 900;
+          line-height: .98;
+          letter-spacing: -.055em;
+          white-space: nowrap;
+        }
+
+        .rivotSupportLead h2 em {
+          color: #ff5f18;
+          font-style: normal;
+        }
+
+        .rivotSupportLead > p {
+          max-width: 650px;
+          margin: 12px 0 0;
+          color: var(--muted);
+          font-size: clamp(15px, 1.05vw, 18px);
+          font-weight: 500;
+          line-height: 1.4;
+        }
+
+        .rivotSupportBenefits {
+          display: grid;
+          grid-template-columns: repeat(4, minmax(0, 1fr));
+        }
+
+        .rivotSupportBenefits article {
+          display: flex;
+          min-width: 0;
+          flex-direction: column;
+          align-items: center;
+          padding: 0 clamp(12px, 1.5vw, 24px);
+          border-left: 1px solid var(--border);
+          text-align: center;
+        }
+
+        .rivotSupportBenefits article:first-child { border-left: 0; }
+
+        .rivotSupportBenefits span,
+        .rivotSupportCardBody li span {
+          display: grid;
+          width: 46px;
+          height: 46px;
+          flex: 0 0 auto;
+          place-items: center;
+          border: 1px solid rgba(239, 116, 48, .18);
+          border-radius: 50%;
+          background: color-mix(in srgb, var(--surface) 90%, var(--accent) 10%);
+          color: var(--text);
+        }
+
+        .rivotSupportBenefits svg {
+          width: 23px;
+          height: 23px;
+          stroke: currentColor;
+          stroke-width: 1.8;
+          stroke-linecap: round;
+          stroke-linejoin: round;
+        }
+
+        .rivotSupportBenefits h3 {
+          margin: 10px 0 0;
+          color: var(--text);
+          font-size: 14px;
+          font-weight: 850;
+          line-height: 1.2;
+          letter-spacing: -.02em;
+        }
+
+        .rivotSupportBenefits p {
+          margin: 5px 0 0;
+          color: var(--muted);
+          font-size: 12px;
+          font-weight: 500;
+          line-height: 1.4;
+        }
+
+        .rivotSupportCards {
+          display: grid;
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+          gap: 18px;
+        }
+
+        .rivotSupportCard {
+          overflow: hidden;
+          border: 1px solid rgba(239, 116, 48, .26);
+          border-radius: 18px;
+          background: color-mix(in srgb, var(--surface) 94%, transparent);
+          box-shadow: 0 18px 42px var(--shadow);
+        }
+
+        .rivotSupportCharge { border-color: rgba(37, 167, 93, .25); }
+
+        .rivotSupportImage {
+          position: relative;
+          height: clamp(220px, 18vw, 300px);
+          margin: 10px 10px 0;
+          overflow: hidden;
+          border-radius: 11px;
+          background: #e9edf0;
+        }
+
+        .rivotSupportImage img {
+          object-fit: cover;
+          object-position: center;
+          transition: transform .6s cubic-bezier(.22, 1, .36, 1);
+        }
+
+        .rivotSupportCard:hover .rivotSupportImage img { transform: scale(1.025); }
+
+        .rivotSupportCardBody {
+          display: grid;
+          grid-template-columns: minmax(0, 1.45fr) minmax(205px, .75fr);
+          gap: 18px;
+          align-items: end;
+          padding: 16px 20px 20px;
+        }
+
+        .rivotSupportEyebrow {
+          margin: 0 0 8px;
+          color: #f05b19;
+          font-size: 12px;
+          font-weight: 900;
+          line-height: 1;
+          letter-spacing: .12em;
+          text-transform: uppercase;
+        }
+
+        .rivotSupportCharge .rivotSupportEyebrow { color: #16833e; }
+
+        .rivotSupportCardCopy h3 {
+          margin: 0;
+          color: var(--text);
+          font-size: clamp(25px, 1.9vw, 32px);
+          font-weight: 900;
+          line-height: 1;
+          letter-spacing: -.045em;
+        }
+
+        .rivotSupportCardCopy h3 em {
+          color: #d52c1e;
+          font-style: normal;
+        }
+
+        .rivotSupportCardCopy > p:not(.rivotSupportEyebrow) {
+          max-width: 520px;
+          margin: 7px 0 0;
+          color: var(--muted);
+          font-size: 13px;
+          line-height: 1.45;
+        }
+
+        .rivotSupportCta {
+          display: inline-flex;
+          min-height: 44px;
+          align-items: center;
+          gap: 22px;
+          margin-top: 13px;
+          padding: 0 13px 0 22px;
+          border-radius: 12px;
+          background: linear-gradient(135deg, #ff651c, #f1490d);
+          color: #fff;
+          font-size: 14px;
+          font-weight: 850;
+          box-shadow: 0 10px 24px rgba(241, 73, 13, .18);
+        }
+
+        .rivotSupportCta span {
+          display: grid;
+          width: 27px;
+          height: 27px;
+          place-items: center;
+          border-radius: 50%;
+          background: rgba(255, 255, 255, .9);
+          color: #f1490d;
+          font-size: 18px;
+        }
+
+        .rivotSupportCharge .rivotSupportCta {
+          background: linear-gradient(135deg, #159a46, #08762e);
+          box-shadow: 0 10px 24px rgba(8, 118, 46, .18);
+        }
+
+        .rivotSupportCharge .rivotSupportCta span { color: #08762e; }
+
+        .rivotSupportCardBody ul {
+          display: grid;
+          gap: 7px;
+          margin: 0;
+          padding: 0;
+          list-style: none;
+        }
+
+        .rivotSupportCardBody li {
+          display: flex;
+          align-items: center;
+          gap: 11px;
+          color: var(--muted);
+          font-size: 13px;
+          font-weight: 650;
+          white-space: nowrap;
+        }
+
+        .rivotSupportCardBody li span {
+          width: 31px;
+          height: 31px;
+          border-color: rgba(239, 116, 48, .22);
+          font-size: 19px;
+        }
+
+        .rivotSupportCharge .rivotSupportCardBody li span {
+          border-color: rgba(37, 167, 93, .22);
+          background: color-mix(in srgb, var(--surface) 90%, #25a75d 10%);
+        }
+
+        html:is([data-theme="dark"], [data-rivot-theme="dark"]) .rivotSupport {
+          background:
+            radial-gradient(circle at 88% 10%, rgba(226, 122, 66, .1), transparent 30%),
+            linear-gradient(135deg, var(--bg), var(--surface) 54%, var(--bg)) !important;
+          color: #fff;
+        }
+
+        html:is([data-theme="dark"], [data-rivot-theme="dark"]) .rivotSupportLead h2,
+        html:is([data-theme="dark"], [data-rivot-theme="dark"]) .rivotSupportBenefits h3,
+        html:is([data-theme="dark"], [data-rivot-theme="dark"]) .rivotSupportCardCopy h3 { color: #f7f8f8; }
+
+        html:is([data-theme="dark"], [data-rivot-theme="dark"]) .rivotSupportCard { background: #141718; }
+        html:is([data-theme="dark"], [data-rivot-theme="dark"]) .rivotSupportBenefits span { background: #191b1d; color: #fff; }
+        html:is([data-theme="dark"], [data-rivot-theme="dark"]) :is(.rivotSupportLead > p, .rivotSupportBenefits p, .rivotSupportCardCopy > p:not(.rivotSupportEyebrow), .rivotSupportCardBody li) { color: #aeb7c2; }
+        html:is([data-theme="dark"], [data-rivot-theme="dark"]) .rivotSupportBenefits article { border-left-color: rgba(255, 255, 255, .12); }
+
+        @media (max-width: 1180px) {
+          .rivotSupport { min-height: 0; padding-block: 56px; }
+          .rivotSupportIntro { grid-template-columns: 1fr; align-items: start; }
+          .rivotSupportLead h2 { white-space: normal; }
+          .rivotSupportBenefits { max-width: 900px; }
+          .rivotSupportCards { grid-template-columns: 1fr; }
+          .rivotSupportImage { height: clamp(260px, 43vw, 420px); }
+        }
+
+        @media (max-width: 700px) {
+          .rivotSupport { padding: 52px 12px; }
+          .rivotSupportLead h2 { font-size: clamp(42px, 13vw, 58px); }
+          .rivotSupportBenefits { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 28px 0; }
+          .rivotSupportBenefits article:nth-child(3) { border-left: 0; }
+          .rivotSupportImage { height: 230px; margin: 8px 8px 0; }
+          .rivotSupportCardBody { grid-template-columns: 1fr; padding: 20px; }
+          .rivotSupportCardBody li { white-space: normal; }
+          .rivotSupportCta { width: 100%; justify-content: space-between; }
+        }
+
         .rivotReach {
           padding: clamp(8px, 1.5vw, 18px) clamp(10px, 2vw, 22px) clamp(64px, 7vw, 92px);
           background: #050606;

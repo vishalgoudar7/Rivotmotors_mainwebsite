@@ -18,7 +18,6 @@ import tpmsAppImage from "@/asset/images/App/TPMS (Tire Pressure Monitoring Syst
 import tripInsightsAppImage from "@/asset/images/App/Trip Insights.webp";
 import accelerationImage from "@/asset/newimg/performance/accelaration.jpeg";
 import recoEngineImage from "@/asset/newimg/performance/recoengine.jpeg";
-import chargerImage from "@/asset/images/last/Charger.optimized.webp";
 import boostModeImage from "@/asset/newimg/Engineering/boost-mode.webp";
 import cruiseImage from "@/asset/newimg/Engineering/cuise.jpeg";
 import discImage from "@/asset/newimg/Engineering/disccc.jpeg";
@@ -32,6 +31,7 @@ import ergonomicSeatImage from "@/asset/newimg/Design/erogonomy seat .webp";
 import floorboardDetailImage from "@/asset/newimg/Design/Footfloor.webp";
 import bootSpaceImage from "@/asset/newimg/Design/bootspace.webp";
 import { bookingColors } from "@/data/bookingColors";
+import { ProductDetailSupportSections } from "@/components/ProductDetailSupportSections";
 
 const DashboardRotation = dynamic(() => import("@/components/DashboardRotation").then((module) => module.DashboardRotation));
 const Faqs = dynamic(() => import("@/components/Faqs").then((module) => module.Faqs));
@@ -210,7 +210,6 @@ export default function Home() {
   const performanceCardsRef = useRef<HTMLDivElement>(null);
   const engineeringCardsRef = useRef<HTMLDivElement>(null);
   const bestFitSectionRef = useRef<HTMLElement>(null);
-  const reachSectionRef = useRef<HTMLElement>(null);
   const [selectedDesignColor, setSelectedDesignColor] = useState<(typeof bookingColors)[number]>(bookingColors[0]);
   const [selectedRideInsight, setSelectedRideInsight] = useState(0);
   const [activeFeatureSlide, setActiveFeatureSlide] = useState(0);
@@ -231,7 +230,6 @@ export default function Home() {
   const selectedHeroImageRef = useRef(0);
   const [activeProductSection, setActiveProductSection] = useState("key-features");
   const [showBackToTop, setShowBackToTop] = useState(false);
-  const [reachVisible, setReachVisible] = useState(false);
 
   useEffect(() => {
     let idleTimer: number | undefined;
@@ -344,19 +342,6 @@ export default function Home() {
     const observer = new IntersectionObserver(
       ([entry]) => setBestFitVisible(entry.isIntersecting),
       { threshold: 0.18 },
-    );
-
-    observer.observe(section);
-    return () => observer.disconnect();
-  }, []);
-
-  useEffect(() => {
-    const section = reachSectionRef.current;
-    if (!section) return;
-
-    const observer = new IntersectionObserver(
-      ([entry]) => setReachVisible(entry.isIntersecting),
-      { threshold: .2 },
     );
 
     observer.observe(section);
@@ -1311,68 +1296,7 @@ export default function Home() {
 
       <SavingsCalculator />
 
-      <section
-        ref={reachSectionRef}
-        className={`rivotReach rivotReachAnimated${reachVisible ? " isVisible" : ""}`}
-        aria-label="RIVOT access network"
-      >
-        <div className="rivotReachPanel">
-          <article className="rivotReachCard rivotReachStore">
-            <div className="rivotReachCopy">
-              <span className="rivotReachIcon" aria-hidden="true">
-                <svg viewBox="0 0 40 40" fill="none">
-                  <path d="M9 17L12 8H28L31 17" stroke="currentColor" strokeWidth="2.4" strokeLinejoin="round" />
-                  <path d="M11 17V32H29V17" stroke="currentColor" strokeWidth="2.4" strokeLinejoin="round" />
-                  <path d="M16 32V23H24V32" stroke="currentColor" strokeWidth="2.4" strokeLinejoin="round" />
-                  <path d="M7 17H33" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" />
-                </svg>
-              </span>
-              <p>RIVOT Stores</p>
-              <h2>
-                Always
-                <br />
-                within reach.
-              </h2>
-              <small>Find your nearest RIVOT store and experience the NX100.</small>
-              <Link href="/book-now" className="rivotReachArrow" aria-label="Find a RIVOT store">
-                <b>Find a Store</b>
-                <span aria-hidden="true">{"\u2192"}</span>
-              </Link>
-            </div>
-            <div className="rivotReachMedia" aria-hidden="true">
-              <Image src="/images/last/Showroom.avif" alt="" fill sizes="(max-width: 900px) 100vw, 390px" />
-            </div>
-          </article>
-
-          <article className="rivotReachCard rivotReachCharge">
-            <div className="rivotReachCopy">
-              <span className="rivotReachIcon" aria-hidden="true">
-                <svg viewBox="0 0 40 40" fill="none">
-                  <path d="M13 6H25C27.21 6 29 7.79 29 10V34H13V6Z" stroke="currentColor" strokeWidth="2.4" strokeLinejoin="round" />
-                  <path d="M17 12H25" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" />
-                  <path d="M29 14H32C33.1 14 34 14.9 34 16V25C34 26.66 32.66 28 31 28H29" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" />
-                  <path d="M20 19L17 25H22L19 31" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" />
-                </svg>
-              </span>
-              <p>RIVOT Charging Network</p>
-              <h2>
-                Power,
-                <br />
-                everywhere.
-              </h2>
-              <small>India&apos;s most reliable EV charging network for every RIVOT ride.</small>
-              <Link href="/products" className="rivotReachArrow" aria-label="Explore RIVOT charging network">
-                <b>Find a Charger</b>
-                <span aria-hidden="true">{"\u2192"}</span>
-              </Link>
-            </div>
-            <div className="rivotReachMedia" aria-hidden="true">
-              <Image src={chargerImage} alt="" fill sizes="(max-width: 900px) 100vw, 390px" />
-            </div>
-          </article>
-
-        </div>
-      </section>
+      <ProductDetailSupportSections includeBestFit={false} />
 
       <section
         ref={bestFitSectionRef}
