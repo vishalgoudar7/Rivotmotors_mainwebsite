@@ -19,13 +19,17 @@ export function ProductDetailSupportSections({ includeBestFit = true }: { includ
       return;
     }
 
+    const isSmallScreen = window.matchMedia("(max-width: 700px)").matches;
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (!entry.isIntersecting) return;
         setSupportVisible(true);
         observer.disconnect();
       },
-      { threshold: 0.14, rootMargin: "0px 0px -8%" },
+      {
+        threshold: isSmallScreen ? 0.06 : 0.14,
+        rootMargin: isSmallScreen ? "0px 0px -3%" : "0px 0px -8%",
+      },
     );
 
     observer.observe(section);
@@ -464,14 +468,71 @@ export function ProductDetailSupportSections({ includeBestFit = true }: { includ
         }
 
         @media (max-width: 700px) {
-          .rivotSupport { padding: 52px 12px; }
-          .rivotSupportLead h2 { font-size: clamp(42px, 13vw, 58px); }
-          .rivotSupportBenefits { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 28px 0; }
+          .rivotSupport { min-height: 0; padding: 42px 12px; }
+          .rivotSupportAnimated .rivotSupportLead {
+            transform: translate3d(0, 28px, 0) scale(.98);
+            transition-duration: .58s, .68s;
+          }
+          .rivotSupportAnimated .rivotSupportBenefits article {
+            transition-duration: .52s, .62s;
+          }
+          .rivotSupportAnimated .rivotSupportBenefits article:nth-child(odd) { transform: translate3d(-24px, 16px, 0); }
+          .rivotSupportAnimated .rivotSupportBenefits article:nth-child(even) { transform: translate3d(24px, 16px, 0); }
+          .rivotSupportAnimated .rivotSupportCard:first-child,
+          .rivotSupportAnimated .rivotSupportCard:last-child {
+            transform: translate3d(0, 34px, 0) scale(.965);
+            transition-duration: .6s, .72s;
+          }
+          .rivotSupportAnimated.isVisible :is(.rivotSupportLead, .rivotSupportBenefits article, .rivotSupportCard) {
+            transform: translate3d(0, 0, 0) scale(1);
+          }
+          .rivotSupportAnimated .rivotSupportBenefits article:nth-child(1) { transition-delay: .12s; }
+          .rivotSupportAnimated .rivotSupportBenefits article:nth-child(2) { transition-delay: .2s; }
+          .rivotSupportAnimated .rivotSupportBenefits article:nth-child(3) { transition-delay: .28s; }
+          .rivotSupportAnimated .rivotSupportBenefits article:nth-child(4) { transition-delay: .36s; }
+          .rivotSupportAnimated .rivotSupportCard:first-child { transition-delay: .42s; }
+          .rivotSupportAnimated .rivotSupportCard:last-child { transition-delay: .54s; }
+          .rivotSupportIntro { gap: 26px; margin-bottom: 20px; }
+          .rivotSupportLead h2 { font-size: clamp(32px, 10vw, 40px); line-height: 1; }
+          .rivotSupportLead > p { margin-top: 10px; font-size: 14px; line-height: 1.45; }
+          .rivotSupportBenefits { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px 0; }
+          .rivotSupportBenefits article { padding-inline: 8px; }
           .rivotSupportBenefits article:nth-child(3) { border-left: 0; }
-          .rivotSupportImage { height: 230px; margin: 8px 8px 0; }
-          .rivotSupportCardBody { grid-template-columns: 1fr; padding: 20px; }
-          .rivotSupportCardBody li { white-space: normal; }
-          .rivotSupportCta { width: 100%; justify-content: space-between; }
+          .rivotSupportBenefits span { width: 40px; height: 40px; }
+          .rivotSupportBenefits svg { width: 20px; height: 20px; }
+          .rivotSupportBenefits h3 { margin-top: 8px; font-size: 12px; }
+          .rivotSupportBenefits p { margin-top: 4px; font-size: 11px; line-height: 1.35; }
+          .rivotSupportCards { gap: 14px; }
+          .rivotSupportCard { border-radius: 14px; }
+          .rivotSupportImage { height: clamp(185px, 56vw, 220px); margin: 7px 7px 0; border-radius: 9px; }
+          .rivotSupportCardBody { grid-template-columns: 1fr; gap: 14px; padding: 15px; }
+          .rivotSupportEyebrow { margin-bottom: 6px; font-size: 10px; }
+          .rivotSupportCardCopy h3 { font-size: clamp(22px, 7vw, 27px); }
+          .rivotSupportCardCopy > p:not(.rivotSupportEyebrow) { margin-top: 6px; font-size: 12px; }
+          .rivotSupportCardBody ul { gap: 6px; }
+          .rivotSupportCardBody li { gap: 9px; font-size: 12px; white-space: normal; }
+          .rivotSupportCardBody li span { width: 28px; height: 28px; font-size: 16px; }
+          .rivotSupportCta { width: 100%; min-height: 42px; justify-content: space-between; margin-top: 11px; font-size: 13px; }
+        }
+
+        @media (max-width: 390px) {
+          .rivotSupport { padding: 36px 10px; }
+          .rivotSupportLead h2 { font-size: 31px; letter-spacing: -.045em; }
+          .rivotSupportLead > p { font-size: 13px; }
+          .rivotSupportBenefits { gap: 20px 0; }
+          .rivotSupportBenefits h3 { font-size: 11.5px; }
+          .rivotSupportBenefits p { font-size: 10.5px; }
+          .rivotSupportImage { height: 184px; }
+          .rivotSupportCardBody { padding: 13px; }
+          .rivotSupportCardCopy h3 { font-size: 22px; }
+        }
+
+        @media (max-width: 700px) and (prefers-reduced-motion: reduce) {
+          .rivotSupportAnimated :is(.rivotSupportLead, .rivotSupportBenefits article, .rivotSupportCard) {
+            opacity: 1;
+            transform: none;
+            transition: none;
+          }
         }
 
         .rivotReach {

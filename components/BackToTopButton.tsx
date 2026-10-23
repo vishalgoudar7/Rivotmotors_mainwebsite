@@ -44,9 +44,9 @@ export function BackToTopButton() {
           padding: 0;
           border: 0;
           border-radius: 50%;
-          background: radial-gradient(circle at 28% 24%, #ffa165 0%, #ff8033 38%, #ef6725 100%);
+          background: radial-gradient(circle at 28% 24%, color-mix(in srgb, var(--accent) 75%, white) 0%, color-mix(in srgb, var(--accent) 90%, white) 38%, var(--accent) 100%);
           color: #fff;
-          box-shadow: 0 14px 28px rgba(239, 116, 48, .34), inset 0 1px 0 rgba(255, 255, 255, .4);
+          box-shadow: 0 14px 28px color-mix(in srgb, var(--accent) 34%, transparent), inset 0 1px 0 rgba(255, 255, 255, .4);
           cursor: pointer;
           transition: transform .2s ease, box-shadow .2s ease, filter .2s ease;
         }
@@ -62,7 +62,7 @@ export function BackToTopButton() {
         .rivotProductsBackToTop:hover,
         .rivotProductsBackToTop:focus-visible {
           filter: brightness(1.04);
-          box-shadow: 0 18px 34px rgba(239, 116, 48, .42), inset 0 1px 0 rgba(255, 255, 255, .46);
+          box-shadow: 0 18px 34px color-mix(in srgb, var(--accent) 42%, transparent), inset 0 1px 0 rgba(255, 255, 255, .46);
           transform: translateY(-2px);
           outline: none;
         }

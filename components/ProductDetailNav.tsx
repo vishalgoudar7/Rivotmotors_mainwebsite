@@ -93,8 +93,8 @@ export function ProductDetailNav({ overlayHero = false }: ProductDetailNavProps)
         }
 
         .productDetailNav.isHeroOverlay .productDetailNavSecondary {
-          border-color: #ef7430;
-          color: #d75f21;
+          border-color: var(--accent);
+          color: var(--accent);
         }
 
         .productDetailNavShell {
@@ -141,13 +141,13 @@ export function ProductDetailNav({ overlayHero = false }: ProductDetailNavProps)
         .productDetailNavLinks a:hover,
         .productDetailNavLinks a:focus-visible,
         .productDetailNavLinks a.isActive {
-          color: #ef7430;
+          color: var(--accent);
           outline: none;
         }
 
         .productDetailNavLinks a.isActive {
           text-decoration: underline;
-          text-decoration-color: #ef7430;
+          text-decoration-color: var(--accent);
           text-decoration-thickness: 2px;
           text-underline-offset: 9px;
         }
@@ -165,7 +165,7 @@ export function ProductDetailNav({ overlayHero = false }: ProductDetailNavProps)
           align-items: center;
           justify-content: center;
           padding: 0 20px;
-          border: 1px solid #ef7430;
+          border: 1px solid var(--accent);
           border-radius: 999px;
           font-size: 14px;
           font-weight: 700;
@@ -174,13 +174,13 @@ export function ProductDetailNav({ overlayHero = false }: ProductDetailNavProps)
         }
 
         .productDetailNavPrimary {
-          background: #ef7430;
+          background: var(--accent);
           color: #fff;
         }
 
         .productDetailNavSecondary {
           background: transparent;
-          color: #d75f21;
+          color: var(--accent);
         }
 
         .productDetailNavPrimary:hover,
@@ -189,7 +189,7 @@ export function ProductDetailNav({ overlayHero = false }: ProductDetailNavProps)
         }
 
         .productDetailNavSecondary:hover {
-          background: #fff4ed;
+          background: color-mix(in srgb, var(--accent) 8%, transparent);
         }
 
         :global(html:is([data-theme="dark"], [data-rivot-theme="dark"])) .productDetailNav {
@@ -205,16 +205,16 @@ export function ProductDetailNav({ overlayHero = false }: ProductDetailNavProps)
         :global(html:is([data-theme="dark"], [data-rivot-theme="dark"])) .productDetailNavLinks a:hover,
         :global(html:is([data-theme="dark"], [data-rivot-theme="dark"])) .productDetailNavLinks a:focus-visible,
         :global(html:is([data-theme="dark"], [data-rivot-theme="dark"])) .productDetailNavLinks a.isActive {
-          color: #ef7430 !important;
+          color: var(--accent) !important;
         }
 
         :global(html:is([data-theme="dark"], [data-rivot-theme="dark"])) .productDetailNavSecondary {
           background: transparent;
-          color: #ef7430 !important;
+          color: var(--accent) !important;
         }
 
         :global(html:is([data-theme="dark"], [data-rivot-theme="dark"])) .productDetailNavSecondary:hover {
-          background: rgba(239, 116, 48, .12);
+          background: color-mix(in srgb, var(--accent) 12%, transparent);
         }
 
         @media (max-width: 900px) {
