@@ -5,10 +5,15 @@ import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import chargingBackground from "@/asset/rivot_support_background_images (1)/rivot-charging-background.webp";
 import storeBackground from "@/asset/rivot_support_background_images (1)/rivot-store-background.webp";
+import accessoriesBackground from "@/asset/rivot_optimized_images/rivot-accessories-card.png";
+import batteryPackBackground from "@/asset/rivot_optimized_images/rivot-battery-pack.webp";
+import vehicleWarrantyShowroom from "@/asset/RIVOT Scooters in a Warm Showroom.webp";
 
 export function ProductDetailSupportSections({ includeBestFit = true }: { includeBestFit?: boolean }) {
   const supportSectionRef = useRef<HTMLElement>(null);
+  const warrantySectionRef = useRef<HTMLElement>(null);
   const [supportVisible, setSupportVisible] = useState(false);
+  const [warrantyVisible, setWarrantyVisible] = useState(false);
 
   useEffect(() => {
     const section = supportSectionRef.current;
@@ -30,6 +35,28 @@ export function ProductDetailSupportSections({ includeBestFit = true }: { includ
         threshold: isSmallScreen ? 0.06 : 0.14,
         rootMargin: isSmallScreen ? "0px 0px -3%" : "0px 0px -8%",
       },
+    );
+
+    observer.observe(section);
+    return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
+    const section = warrantySectionRef.current;
+    if (!section) return;
+
+    if (!("IntersectionObserver" in window)) {
+      setWarrantyVisible(true);
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (!entry.isIntersecting) return;
+        setWarrantyVisible(true);
+        observer.disconnect();
+      },
+      { threshold: 0.12, rootMargin: "0px 0px -6%" },
     );
 
     observer.observe(section);
@@ -113,46 +140,203 @@ export function ProductDetailSupportSections({ includeBestFit = true }: { includ
         </div>
       </section>
 
-      {includeBestFit ? <section className="rivotBestFit" aria-labelledby="best-fit-title">
+      {includeBestFit ? <section
+        ref={warrantySectionRef}
+        className={`rivotWarranty rivotWarrantyAnimated${warrantyVisible ? " isVisible" : ""}`}
+        aria-labelledby="rivot-warranty-title"
+      >
+        <div className="rivotWarrantyShell">
+          <header className="rivotWarrantyHeader">
+            <p>RIVOT WARRANTY</p>
+            <h2 id="rivot-warranty-title">Power That Lasts. <em>Care That Continues.</em></h2>
+            <span>Designed for durability and supported by warranty coverage for your vehicle and essential components.</span>
+          </header>
+
+          <div className="rivotWarrantyGrid">
+            <article className="rivotWarrantyCard">
+              <div className="rivotWarrantyImage">
+                <Image src={vehicleWarrantyShowroom} alt="Graphite and white electric scooters displayed in a premium showroom" fill sizes="(max-width: 760px) 100vw, 32vw" />
+              </div>
+              <div className="rivotWarrantyCardBody">
+                <span className="rivotWarrantyIcon" aria-hidden="true"><svg viewBox="0 0 32 32" fill="none"><circle cx="10" cy="23" r="5"/><circle cx="24" cy="23" r="5"/><path d="M10 23h8l-4-9H8M17 9h4l3 14M14 14h6M7 9h5"/></svg></span>
+                <div><h3>Vehicle Warranty</h3><strong>5 Years</strong><p>Coverage for manufacturing defects.</p></div>
+              </div>
+            </article>
+
+            <article className="rivotWarrantyCard">
+              <div className="rivotWarrantyImage rivotWarrantyBatteryImage">
+                <Image src={batteryPackBackground} alt="RIVOT electric scooter battery pack" fill sizes="(max-width: 760px) 100vw, 32vw" />
+              </div>
+              <div className="rivotWarrantyCardBody">
+                <span className="rivotWarrantyIcon" aria-hidden="true"><svg viewBox="0 0 32 32" fill="none"><rect x="6" y="8" width="20" height="19" rx="2"/><path d="M12 8V5h8v3M17 12l-5 8h5l-2 4 6-8h-5l1-4Z"/></svg></span>
+                <div><h3>Battery Warranty</h3><strong>5 Years</strong><p>Coverage for the battery pack and BMS.</p></div>
+              </div>
+            </article>
+
+            <aside className="rivotWarrantyReasons" aria-label="Why RIVOT warranty matters">
+              <h3>Why it matters</h3>
+              <ul>
+                <li><span aria-hidden="true">✓</span> Manufacturing defect protection</li>
+                <li><span aria-hidden="true">✓</span> Authorized service support</li>
+                <li><span aria-hidden="true">✓</span> Genuine parts</li>
+              </ul>
+              <Link href="/legal/warranty" className="rivotWarrantyCta">Explore Warranty <span aria-hidden="true">→</span></Link>
+            </aside>
+          </div>
+        </div>
+      </section> : null}
+
+      {includeBestFit ? <section className="rivotBestFit rivotBestFitReference" aria-labelledby="best-fit-title">
         <div className="rivotBestFitShell">
           <div className="rivotBestFitHeader">
-            <h2 id="best-fit-title">A best fit for your Scooter</h2>
-            <p>There&apos;s more under the hood.</p>
+            <p>RIVOT SUPPORT</p>
+            <h2 id="best-fit-title">Ride Longer. <em>Worry Less.</em></h2>
+            <small>Accessories, advanced battery technology and smart care —<br />all designed to keep you moving.</small>
           </div>
 
           <div className="rivotBestFitGrid">
             <article className="rivotBestFitCard rivotBestFitAccessories">
-              <Image src="/images/shop/accessories.optimized.webp" alt="RIVOT scooter accessories" fill sizes="(max-width: 1000px) 100vw, 33vw" className="rivotBestFitCardImage" />
-              <h3>Accessories</h3>
-              <p>There&apos;s more under the hood.</p>
-              <Link href="/merchandise" className="rivotBestFitCta">
-                Shop accessories <span aria-hidden="true">{"\u2192"}</span>
-              </Link>
+              <Image src={accessoriesBackground} alt="RIVOT helmet, riding jacket, scooter cover and accessories" fill sizes="(max-width: 1000px) 100vw, 33vw" className="rivotBestFitCardImage" />
+              <div className="rivotBestFitCopy">
+                <span className="rivotBestFitIcon" aria-hidden="true"><svg viewBox="0 0 32 32" fill="none"><path d="M7 20c-1-7 3-12 9-12s10 5 9 12M9 21c3-3 11-3 14 0M8 24c4-3 12-3 16 0M5 13l4 2M27 13l-4 2"/><path d="M6 20v5l4-1M26 20v5l-4-1"/></svg></span>
+                <h3>Accessories</h3>
+                <p>Premium accessories<br />for style, safety and<br />convenience.</p>
+              </div>
+              <Link href="/merchandise" className="rivotBestFitArrow" aria-label="Explore RIVOT accessories"><span aria-hidden="true">→</span></Link>
             </article>
-
-            <Link href="/legal/warranty" className="rivotBestFitCard" aria-label="View RIVOT extended warranty">
-              <Image src="/images/shop/battery.optimized.webp" alt="Battery and motor extended warranty" fill sizes="(max-width: 1000px) 100vw, 33vw" className="rivotBestFitCardImage" />
-              <p className="rivotBestFitEyebrow rivotBestFitGreenText">Extended Warranty</p>
-              <h3>Battery + Motor</h3>
-              <p>Engineered for a longer, smarter ride.</p>
-              <span className="rivotBestFitCta">Explore more</span>
-            </Link>
 
             <article className="rivotBestFitCard rivotBestFitSubscription">
-              <Image src="/images/shop/smart-care.optimized.webp" alt="Smart Care extended scooter coverage" fill sizes="(max-width: 1000px) 100vw, 33vw" className="rivotBestFitCardImage" />
-              <p className="rivotBestFitEyebrow rivotBestFitBlueText">Subscription</p>
-              <h3>Smart Care</h3>
-              <p>Extended Warranty &amp; Care for your Simple Scooters.</p>
-              <Link href="/legal/subscriptions" className="rivotBestFitCta">
-                Explore more
-              </Link>
+              <Image src={storeBackground} alt="RIVOT scooters at an authorized showroom and service location" fill sizes="(max-width: 1000px) 100vw, 33vw" className="rivotBestFitCardImage" />
+              <div className="rivotBestFitCopy">
+                <span className="rivotBestFitIcon rivotBestFitIconGreen" aria-hidden="true"><svg viewBox="0 0 32 32" fill="none"><path d="M16 3c4 3 8 4 12 4v8c0 7-5 12-12 15C9 27 4 22 4 15V7c4 0 8-1 12-4Z"/><path d="m11 16 3 3 7-8"/></svg></span>
+                <h3>Smart Care</h3>
+                <p>Regular service and<br />complete peace of mind.</p>
+              </div>
+              <Link href="/legal/subscriptions" className="rivotBestFitArrow" aria-label="Explore RIVOT Smart Care"><span aria-hidden="true">→</span></Link>
             </article>
+          </div>
+
+          <div className="rivotBestFitBenefits" aria-label="RIVOT ownership benefits">
+            <article><span aria-hidden="true"><svg viewBox="0 0 32 32" fill="none"><path d="M20 5a7 7 0 0 0-8 9L4 22l6 6 8-8a7 7 0 0 0 9-8l-5 5-5-2-2-5 5-5Z"/></svg></span><div><h3>Genuine Parts</h3><p>Built for reliability</p></div></article>
+            <article><span aria-hidden="true"><svg viewBox="0 0 32 32" fill="none"><circle cx="16" cy="16" r="6"/><path d="m16 3 2 4 4-2 2 4 4 1-1 5 3 3-3 4 1 4-5 1-3 3-4-2-4 2-3-4-5-1 1-5-3-3 3-4-1-4 5-1 3-3Z"/></svg></span><div><h3>Expert Support</h3><p>Always here for you</p></div></article>
+            <article><span aria-hidden="true"><svg viewBox="0 0 32 32" fill="none"><path d="M25 13c0 7-9 16-9 16S7 20 7 13a9 9 0 1 1 18 0Z"/><circle cx="16" cy="13" r="3"/></svg></span><div><h3>Authorized Service Network</h3><p>Across India</p></div></article>
+            <article><span aria-hidden="true"><svg viewBox="0 0 32 32" fill="none"><path d="m16 3 4 8 9 1-6.5 6 2 9-8.5-4.5L7.5 27l2-9L3 12l9-1 4-8Z"/></svg></span><div><h3>Best Ownership Experience</h3><p>Ride with confidence</p></div></article>
           </div>
         </div>
       </section> : null}
 
       <style>{`
+        .rivotWarranty {
+          --accent: #ef7430;
+          display: flex;
+          min-height: calc(100svh - 84px);
+          align-items: center;
+          padding: clamp(30px, 4svh, 48px) clamp(18px, 4vw, 64px);
+          background: radial-gradient(circle at 50% 46%, color-mix(in srgb, var(--accent) 8%, transparent), transparent 34%), #fbfbfa;
+          color: #0b0c0d;
+        }
+
+        .rivotWarrantyShell { width: min(100%, 1560px); margin: 0 auto; text-align: center; }
+        .rivotWarrantyAnimated .rivotWarrantyHeader > *,
+        .rivotWarrantyAnimated .rivotWarrantyCard,
+        .rivotWarrantyAnimated .rivotWarrantyReasons {
+          opacity: 0;
+          will-change: transform, opacity;
+          transition: opacity .72s cubic-bezier(.22, 1, .36, 1), transform .82s cubic-bezier(.22, 1, .36, 1);
+        }
+        .rivotWarrantyAnimated .rivotWarrantyHeader > * { transform: translate3d(0, 24px, 0); }
+        .rivotWarrantyAnimated .rivotWarrantyCard:first-child { transform: translate3d(-44px, 28px, 0); }
+        .rivotWarrantyAnimated .rivotWarrantyCard:nth-child(2) { transform: translate3d(0, 34px, 0); }
+        .rivotWarrantyAnimated .rivotWarrantyReasons { transform: translate3d(44px, 28px, 0); }
+        .rivotWarrantyAnimated.isVisible .rivotWarrantyHeader > *,
+        .rivotWarrantyAnimated.isVisible .rivotWarrantyCard,
+        .rivotWarrantyAnimated.isVisible .rivotWarrantyReasons { opacity: 1; transform: translate3d(0, 0, 0); }
+        .rivotWarrantyAnimated .rivotWarrantyHeader > p { transition-delay: .04s; }
+        .rivotWarrantyAnimated .rivotWarrantyHeader h2 { transition-delay: .11s; }
+        .rivotWarrantyAnimated .rivotWarrantyHeader > span { transition-delay: .18s; }
+        .rivotWarrantyAnimated .rivotWarrantyCard:first-child { transition-delay: .24s; }
+        .rivotWarrantyAnimated .rivotWarrantyCard:nth-child(2) { transition-delay: .34s; }
+        .rivotWarrantyAnimated .rivotWarrantyReasons { transition-delay: .44s; }
+
+        @media (prefers-reduced-motion: reduce) {
+          .rivotWarrantyAnimated .rivotWarrantyHeader > *,
+          .rivotWarrantyAnimated .rivotWarrantyCard,
+          .rivotWarrantyAnimated .rivotWarrantyReasons {
+            opacity: 1;
+            transform: none;
+            transition: none;
+          }
+        }
+        .rivotWarrantyHeader > p {
+          display: inline-flex;
+          align-items: center;
+          gap: 28px;
+          margin: 0 0 12px;
+          color: var(--accent);
+          font-size: clamp(13px, .9vw, 17px);
+          font-weight: 900;
+          letter-spacing: .03em;
+        }
+        .rivotWarrantyHeader > p::before, .rivotWarrantyHeader > p::after { content: ""; width: 66px; height: 3px; background: currentColor; }
+        .rivotWarrantyHeader h2 { margin: 0; color: var(--text); font-size: clamp(32px, 2.8vw, 48px); font-weight: 950; line-height: 1; letter-spacing: -.05em; }
+        .rivotWarrantyHeader h2 em { color: var(--accent); font-style: normal; }
+        .rivotWarrantyHeader > span { display: block; max-width: 850px; margin: 10px auto 0; color: #6f809b; font-size: clamp(15px, 1.05vw, 19px); font-weight: 600; line-height: 1.35; }
+
+        .rivotWarrantyGrid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: clamp(14px, 1.4vw, 22px); margin-top: clamp(20px, 2.5svh, 30px); text-align: left; }
+        .rivotWarrantyCard, .rivotWarrantyReasons { overflow: hidden; border: 1px solid rgba(15, 23, 42, .06); border-radius: 28px; background: #fff; box-shadow: 0 20px 50px rgba(30, 40, 60, .08); }
+        .rivotWarrantyImage { position: relative; height: clamp(170px, 14vw, 230px); overflow: hidden; background: #f2f2f0; }
+        .rivotWarrantyImage img { object-fit: cover; object-position: 53% 62%; transition: transform .55s ease; }
+        .rivotWarrantyBatteryImage img { object-position: center; }
+        .rivotWarrantyCard:hover .rivotWarrantyImage img { transform: scale(1.035); }
+        .rivotWarrantyCardBody { display: flex; align-items: center; gap: 16px; padding: 16px 20px 18px; }
+        .rivotWarrantyIcon { display: grid; width: 58px; height: 58px; flex: 0 0 58px; place-items: center; border-radius: 16px; background: color-mix(in srgb, var(--surface) 80%, var(--accent) 20%); color: var(--accent); }
+        .rivotWarrantyIcon svg { width: 34px; height: 34px; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+        .rivotWarrantyCardBody > div { padding-left: 16px; border-left: 1px solid #91a0b5; }
+        .rivotWarrantyCardBody h3 { margin: 0 0 5px; font-size: clamp(17px, 1.2vw, 22px); font-weight: 900; letter-spacing: -.035em; }
+        .rivotWarrantyCardBody strong { display: block; font-size: clamp(21px, 1.55vw, 28px); font-weight: 950; line-height: 1.05; letter-spacing: -.04em; }
+        .rivotWarrantyCardBody p { margin: 6px 0 0; color: #6f809b; font-size: clamp(12px, .85vw, 15px); }
+        .rivotWarrantyReasons { display: flex; flex-direction: column; justify-content: center; padding: clamp(24px, 2.7vw, 44px); background: linear-gradient(135deg, var(--surface) 20%, color-mix(in srgb, var(--surface) 91%, var(--accent) 9%) 100%); }
+        .rivotWarrantyReasons h3 { margin: 0 0 22px; font-size: clamp(28px, 2.2vw, 38px); font-weight: 950; letter-spacing: -.05em; }
+        .rivotWarrantyReasons ul { display: grid; gap: 20px; margin: 0; padding: 0; list-style: none; }
+        .rivotWarrantyReasons li { display: flex; align-items: center; gap: 16px; font-size: clamp(15px, 1.05vw, 19px); font-weight: 650; }
+        .rivotWarrantyReasons li span { display: grid; width: 36px; height: 36px; flex: 0 0 36px; place-items: center; border-radius: 50%; background: var(--accent); color: #fff; font-size: 22px; font-weight: 900; }
+        .rivotWarrantyCta { display: inline-flex; min-height: 54px; align-self: flex-start; align-items: center; gap: 22px; margin-top: clamp(22px, 2.5svh, 30px); padding: 0 25px 0 32px; border-radius: 999px; background: var(--accent); color: #fff; font-size: clamp(15px, 1vw, 18px); font-weight: 900; box-shadow: 0 16px 34px color-mix(in srgb, var(--accent) 24%, transparent); transition: transform .2s ease, box-shadow .2s ease, background .2s ease; }
+        .rivotWarrantyCta span { font-size: 28px; line-height: 1; }
+        .rivotWarrantyCta:hover { transform: translateY(-3px); background: color-mix(in srgb, var(--accent) 84%, #000); box-shadow: 0 20px 40px color-mix(in srgb, var(--accent) 30%, transparent); }
+
+        @media (max-width: 1100px) {
+          .rivotWarrantyGrid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+          .rivotWarrantyReasons { grid-column: 1 / -1; }
+          .rivotWarrantyReasons ul { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; }
+        }
+
+        @media (max-width: 700px) {
+          .rivotWarranty { padding: 56px 16px; }
+          .rivotWarrantyHeader > p { gap: 14px; margin-bottom: 16px; }
+          .rivotWarrantyHeader > p::before, .rivotWarrantyHeader > p::after { width: 34px; height: 2px; }
+          .rivotWarrantyHeader h2 { font-size: clamp(32px, 9.5vw, 44px); }
+          .rivotWarrantyHeader > span { font-size: 16px; }
+          .rivotWarrantyGrid { grid-template-columns: 1fr; margin-top: 32px; }
+          .rivotWarrantyCard, .rivotWarrantyReasons { border-radius: 22px; }
+          .rivotWarrantyImage { height: 250px; }
+          .rivotWarrantyCardBody { gap: 15px; padding: 20px; }
+          .rivotWarrantyIcon { width: 60px; height: 60px; flex-basis: 60px; border-radius: 16px; }
+          .rivotWarrantyIcon svg { width: 34px; height: 34px; }
+          .rivotWarrantyCardBody > div { padding-left: 15px; }
+          .rivotWarrantyCardBody strong { font-size: 25px; }
+          .rivotWarrantyReasons { grid-column: auto; padding: 30px 24px; }
+          .rivotWarrantyReasons h3 { margin-bottom: 24px; }
+          .rivotWarrantyReasons ul { grid-template-columns: 1fr; gap: 18px; }
+          .rivotWarrantyCta { min-height: 62px; gap: 22px; margin-top: 34px; padding: 0 27px 0 33px; }
+        }
+
+        html:is([data-theme="dark"], [data-rivot-theme="dark"]) .rivotWarranty { background: radial-gradient(circle at 50% 42%, color-mix(in srgb, var(--accent) 9%, transparent), transparent 34%), var(--bg); color: var(--text); }
+        html:is([data-theme="dark"], [data-rivot-theme="dark"]) :is(.rivotWarrantyCard, .rivotWarrantyReasons) { border-color: var(--border); background: var(--surface); }
+        html:is([data-theme="dark"], [data-rivot-theme="dark"]) .rivotWarrantyReasons { background: linear-gradient(135deg, var(--surface), color-mix(in srgb, var(--surface) 90%, var(--accent) 10%)); }
+        html:is([data-theme="dark"], [data-rivot-theme="dark"]) .rivotWarrantyCardBody > div { border-color: var(--border); }
+
         .rivotSupport {
+          --accent: #ef7430;
           position: relative;
           display: flex;
           min-height: calc(100svh - 84px);
@@ -235,7 +419,7 @@ export function ProductDetailSupportSections({ includeBestFit = true }: { includ
         }
 
         .rivotSupportLead h2 em {
-          color: #ff5f18;
+          color: var(--accent);
           font-style: normal;
         }
 
@@ -272,7 +456,7 @@ export function ProductDetailSupportSections({ includeBestFit = true }: { includ
           height: 46px;
           flex: 0 0 auto;
           place-items: center;
-          border: 1px solid rgba(239, 116, 48, .18);
+          border: 1px solid color-mix(in srgb, var(--accent) 22%, transparent);
           border-radius: 50%;
           background: color-mix(in srgb, var(--surface) 90%, var(--accent) 10%);
           color: var(--text);
@@ -312,13 +496,13 @@ export function ProductDetailSupportSections({ includeBestFit = true }: { includ
 
         .rivotSupportCard {
           overflow: hidden;
-          border: 1px solid rgba(239, 116, 48, .26);
+          border: 1px solid color-mix(in srgb, var(--accent) 30%, transparent);
           border-radius: 18px;
           background: color-mix(in srgb, var(--surface) 94%, transparent);
           box-shadow: 0 18px 42px var(--shadow);
         }
 
-        .rivotSupportCharge { border-color: rgba(37, 167, 93, .25); }
+        .rivotSupportCharge { border-color: color-mix(in srgb, var(--accent) 30%, transparent); }
 
         .rivotSupportImage {
           position: relative;
@@ -347,7 +531,7 @@ export function ProductDetailSupportSections({ includeBestFit = true }: { includ
 
         .rivotSupportEyebrow {
           margin: 0 0 8px;
-          color: #f05b19;
+          color: var(--accent);
           font-size: 12px;
           font-weight: 900;
           line-height: 1;
@@ -355,7 +539,7 @@ export function ProductDetailSupportSections({ includeBestFit = true }: { includ
           text-transform: uppercase;
         }
 
-        .rivotSupportCharge .rivotSupportEyebrow { color: #16833e; }
+        .rivotSupportCharge .rivotSupportEyebrow { color: var(--accent); }
 
         .rivotSupportCardCopy h3 {
           margin: 0;
@@ -367,7 +551,7 @@ export function ProductDetailSupportSections({ includeBestFit = true }: { includ
         }
 
         .rivotSupportCardCopy h3 em {
-          color: #d52c1e;
+          color: var(--accent);
           font-style: normal;
         }
 
@@ -387,11 +571,11 @@ export function ProductDetailSupportSections({ includeBestFit = true }: { includ
           margin-top: 13px;
           padding: 0 13px 0 22px;
           border-radius: 12px;
-          background: linear-gradient(135deg, #ff651c, #f1490d);
+          background: var(--accent);
           color: #fff;
           font-size: 14px;
           font-weight: 850;
-          box-shadow: 0 10px 24px rgba(241, 73, 13, .18);
+          box-shadow: 0 10px 24px color-mix(in srgb, var(--accent) 22%, transparent);
         }
 
         .rivotSupportCta span {
@@ -401,16 +585,16 @@ export function ProductDetailSupportSections({ includeBestFit = true }: { includ
           place-items: center;
           border-radius: 50%;
           background: rgba(255, 255, 255, .9);
-          color: #f1490d;
+          color: var(--accent);
           font-size: 18px;
         }
 
         .rivotSupportCharge .rivotSupportCta {
-          background: linear-gradient(135deg, #159a46, #08762e);
-          box-shadow: 0 10px 24px rgba(8, 118, 46, .18);
+          background: var(--accent);
+          box-shadow: 0 10px 24px color-mix(in srgb, var(--accent) 22%, transparent);
         }
 
-        .rivotSupportCharge .rivotSupportCta span { color: #08762e; }
+        .rivotSupportCharge .rivotSupportCta span { color: var(--accent); }
 
         .rivotSupportCardBody ul {
           display: grid;
@@ -433,13 +617,13 @@ export function ProductDetailSupportSections({ includeBestFit = true }: { includ
         .rivotSupportCardBody li span {
           width: 31px;
           height: 31px;
-          border-color: rgba(239, 116, 48, .22);
+          border-color: color-mix(in srgb, var(--accent) 26%, transparent);
           font-size: 19px;
         }
 
         .rivotSupportCharge .rivotSupportCardBody li span {
-          border-color: rgba(37, 167, 93, .22);
-          background: color-mix(in srgb, var(--surface) 90%, #25a75d 10%);
+          border-color: color-mix(in srgb, var(--accent) 26%, transparent);
+          background: color-mix(in srgb, var(--surface) 90%, var(--accent) 10%);
         }
 
         html:is([data-theme="dark"], [data-rivot-theme="dark"]) .rivotSupport {
@@ -1422,6 +1606,590 @@ export function ProductDetailSupportSections({ includeBestFit = true }: { includ
           }
 
           .rivotBestFitCta { width: 100%; }
+        }
+
+        /* Product support showcase */
+        .rivotBestFit {
+          min-height: 0;
+          display: block;
+          padding: clamp(46px, 4.5vw, 78px) clamp(18px, 3vw, 54px) 18px;
+          background:
+            linear-gradient(128deg, rgba(242, 126, 52, .12) 0 9%, transparent 9.1% 21%, rgba(247, 181, 130, .09) 21.1% 29%, transparent 29.1% 100%),
+            linear-gradient(180deg, #fff 0%, #fdfdfc 100%);
+        }
+
+        .rivotBestFit::before {
+          background:
+            linear-gradient(132deg, transparent 0 74%, rgba(239, 116, 48, .055) 74.1% 81%, transparent 81.1%),
+            linear-gradient(48deg, transparent 0 88%, rgba(239, 116, 48, .12) 88.1%);
+        }
+
+        .rivotBestFitShell { width: min(100%, 1760px); }
+
+        .rivotBestFitHeader > p {
+          display: inline-flex;
+          gap: 18px;
+          margin: 0 0 24px;
+          color: var(--accent);
+          font-size: clamp(14px, 1.15vw, 21px);
+          letter-spacing: 0;
+        }
+
+        .rivotBestFitHeader > p::before,
+        .rivotBestFitHeader > p::after {
+          display: block;
+          width: clamp(28px, 2.8vw, 52px);
+          height: 2px;
+          background: var(--accent);
+        }
+
+        .rivotBestFitHeader h2 {
+          font-size: clamp(42px, 4.2vw, 72px);
+          line-height: .96;
+          letter-spacing: -.052em;
+        }
+
+        .rivotBestFitHeader h2 em {
+          color: var(--accent);
+          font-style: normal;
+        }
+
+        .rivotBestFitHeader small {
+          margin-top: 18px;
+          color: #667793;
+          font-size: clamp(16px, 1.45vw, 25px);
+          font-weight: 500;
+          line-height: 1.3;
+        }
+
+        .rivotBestFitGrid {
+          grid-template-columns: 1.03fr 1.03fr 1.08fr;
+          gap: clamp(16px, 1.5vw, 28px);
+          margin-top: clamp(28px, 2.8vw, 46px);
+        }
+
+        .rivotBestFitCard,
+        .rivotBestFitSubscription {
+          height: clamp(390px, 32vw, 515px);
+          min-height: 390px;
+          display: block;
+          padding: clamp(88px, 7vw, 116px) clamp(22px, 2.1vw, 40px) 24px;
+          border: 1px solid rgba(21, 25, 29, .04);
+          border-radius: 22px;
+          background: #f6f3f0;
+          text-align: left;
+          box-shadow: 0 16px 36px rgba(37, 42, 48, .08);
+        }
+
+        .rivotBestFitCard::before,
+        .rivotBestFitAccessories::before {
+          z-index: 1;
+          background: linear-gradient(180deg, rgba(255,255,255,.97) 0%, rgba(255,255,255,.84) 27%, rgba(255,255,255,.12) 54%, rgba(255,255,255,.01) 100%);
+        }
+
+        .rivotBestFitBattery::before {
+          background:
+            linear-gradient(118deg, rgba(255,255,255,.98) 0 35%, rgba(255,241,229,.77) 48%, rgba(255,137,61,.12) 70%, rgba(255,137,61,.04) 100%),
+            linear-gradient(180deg, rgba(255,255,255,.9), transparent 52%);
+        }
+
+        .rivotBestFitSubscription::before {
+          background: linear-gradient(180deg, rgba(237,249,255,.96) 0%, rgba(237,249,255,.76) 28%, rgba(237,249,255,.08) 56%);
+        }
+
+        .rivotBestFitCardImage {
+          object-position: center 60%;
+          filter: saturate(1.03) brightness(1.06);
+        }
+
+        .rivotBestFitBattery .rivotBestFitCardImage {
+          object-position: center bottom;
+          filter: saturate(.9) brightness(1.35) sepia(.12);
+          transform: scale(1.42);
+        }
+
+        .rivotBestFitBattery:hover .rivotBestFitCardImage { transform: scale(1.46); }
+
+        .rivotBestFitSubscription .rivotBestFitCardImage {
+          object-position: 68% center;
+          filter: saturate(1.08) brightness(1.1);
+        }
+
+        .rivotBestFitReference .rivotBestFitCardImage {
+          inset: 0 !important;
+          width: 100% !important;
+          height: 100% !important;
+          object-fit: cover;
+          object-position: center bottom;
+        }
+
+        .rivotBestFitReference .rivotBestFitBattery .rivotBestFitCardImage {
+          inset: -2% -6% !important;
+          width: 112% !important;
+          height: 104% !important;
+          max-width: none !important;
+          object-fit: cover;
+          object-position: center bottom;
+          filter: saturate(.96) brightness(1.04) sepia(.04);
+          transform: skewX(3deg) scale(1.03);
+        }
+
+        .rivotBestFitReference .rivotBestFitSubscription .rivotBestFitCardImage {
+          inset: 0 !important;
+          height: 100% !important;
+          object-position: 68% center;
+        }
+
+        .rivotBestFitCopy {
+          position: absolute !important;
+          top: 20px;
+          left: clamp(22px, 2.1vw, 40px);
+          z-index: 3 !important;
+          width: min(72%, 310px);
+          text-align: left;
+          text-shadow: none !important;
+        }
+
+        .rivotBestFitIcon {
+          position: static !important;
+          display: grid;
+          width: 64px;
+          height: 64px;
+          place-items: center;
+          border-radius: 50%;
+          background: color-mix(in srgb, var(--surface) 78%, var(--accent) 22%);
+          color: var(--accent);
+          text-shadow: none !important;
+        }
+
+        .rivotBestFitIcon svg { width: 38px; height: 38px; stroke: currentColor; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
+        .rivotBestFitBattery .rivotBestFitIcon svg { fill: currentColor; stroke: none; }
+        .rivotBestFitIconGreen { color: var(--accent); background: color-mix(in srgb, var(--surface) 78%, var(--accent) 22%); }
+
+        .rivotBestFitCard h3,
+        .rivotBestFitSubscription h3 {
+          position: relative;
+          z-index: 3;
+          width: max-content;
+          max-width: 100%;
+          margin: 12px 0 0;
+          color: #090b0d;
+          font-size: clamp(25px, 2vw, 37px);
+          line-height: 1;
+          letter-spacing: -.045em;
+          text-shadow: none;
+          text-transform: uppercase;
+        }
+
+        .rivotBestFitCopy > p {
+          position: relative;
+          z-index: 3;
+          max-width: 300px;
+          margin: 10px 0 0;
+          color: #52657f;
+          font-size: clamp(15px, 1.25vw, 21px);
+          font-weight: 500;
+          line-height: 1.3;
+          text-align: left;
+          text-shadow: none;
+        }
+
+        .rivotBestFitArrow {
+          position: absolute !important;
+          right: 22px;
+          bottom: 22px;
+          z-index: 4 !important;
+          display: grid;
+          width: 50px;
+          height: 50px;
+          place-items: center;
+          border: 2px solid rgba(255,255,255,.8);
+          border-radius: 50%;
+          background: var(--accent);
+          color: #fff;
+          font-size: 26px;
+          font-weight: 700;
+          line-height: 1;
+          text-shadow: none !important;
+          box-shadow: 0 10px 24px color-mix(in srgb, var(--accent) 30%, transparent);
+          transition: transform .22s ease, background .22s ease, box-shadow .22s ease;
+        }
+
+        .rivotBestFitArrow:hover { transform: skewX(3deg) scale(1.08); background: color-mix(in srgb, var(--accent) 84%, #000); box-shadow: 0 14px 30px color-mix(in srgb, var(--accent) 40%, transparent); }
+        .rivotBestFitArrow:focus-visible { outline: 3px solid #111; outline-offset: 3px; }
+
+        @media (hover: hover) and (pointer: fine) {
+          .rivotBestFitReference .rivotBestFitCard { transition: transform .25s ease, box-shadow .25s ease; }
+          .rivotBestFitReference .rivotBestFitCard:hover { transform: skewX(-3deg) translateY(-5px); box-shadow: 0 24px 48px rgba(30,38,46,.14); }
+          .rivotBestFitReference .rivotBestFitBattery:hover .rivotBestFitCardImage { transform: skewX(3deg) scale(1.06); }
+        }
+
+        .rivotBestFitBenefits {
+          position: relative;
+          display: grid;
+          grid-template-columns: .85fr .9fr 1.15fr 1.05fr;
+          margin-top: 16px;
+          padding: 12px 18px;
+          border: 1px solid rgba(21,25,29,.035);
+          border-radius: 20px;
+          background: rgba(255,255,255,.94);
+          box-shadow: 0 10px 30px rgba(30,38,46,.07);
+        }
+
+        .rivotBestFitBenefits article { display: flex; min-width: 0; align-items: center; gap: 16px; padding: 0 26px; border-left: 1px solid #aeb9c7; }
+        .rivotBestFitBenefits article:first-child { border-left: 0; }
+        .rivotBestFitBenefits article > span { display: grid; width: 64px; height: 64px; flex: 0 0 64px; place-items: center; border-radius: 50%; background: color-mix(in srgb, var(--surface) 82%, var(--accent) 18%); color: var(--accent); }
+        .rivotBestFitBenefits svg { width: 38px; height: 38px; stroke: currentColor; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
+        .rivotBestFitBenefits h3 { margin: 0; color: #101215; font-size: clamp(14px, 1.12vw, 20px); line-height: 1.15; }
+        .rivotBestFitBenefits p { margin: 4px 0 0; color: #657690; font-size: clamp(12px, 1vw, 17px); line-height: 1.2; }
+
+        @media (max-width: 1000px) {
+          .rivotBestFit { padding: 54px 18px 22px; }
+          .rivotBestFitHeader small br { display: none; }
+          .rivotBestFitGrid { grid-template-columns: 1fr; width: min(100%, 680px); }
+          .rivotBestFitCard, .rivotBestFitSubscription { height: clamp(410px, 70vw, 520px); min-height: 410px; }
+          .rivotBestFitBenefits { grid-template-columns: repeat(2, 1fr); gap: 20px 0; margin-top: 18px; }
+          .rivotBestFitBenefits article:nth-child(3) { border-left: 0; }
+        }
+
+        @media (max-width: 420px) {
+          .rivotBestFitHeader > p { margin-bottom: 18px; font-size: 13px; }
+          .rivotBestFitHeader h2 { font-size: clamp(36px, 11vw, 48px); }
+          .rivotBestFitHeader small { font-size: 15px; }
+          .rivotBestFitCard, .rivotBestFitSubscription { height: 420px; min-height: 420px; padding: 90px 22px 22px; }
+          .rivotBestFitCopy { left: 22px; width: calc(100% - 44px); }
+          .rivotBestFitIcon { width: 58px; height: 58px; }
+          .rivotBestFitBenefits { grid-template-columns: 1fr; padding: 6px 16px; }
+          .rivotBestFitBenefits article, .rivotBestFitBenefits article:nth-child(3) { min-height: 82px; padding: 10px 4px; border-left: 0; border-top: 1px solid #d4d9df; }
+          .rivotBestFitBenefits article:first-child { border-top: 0; }
+          .rivotBestFitBenefits article > span { width: 54px; height: 54px; flex-basis: 54px; }
+          .rivotBestFitBenefits svg { width: 32px; height: 32px; }
+          .rivotBestFitBenefits h3 { font-size: 15px; }
+          .rivotBestFitBenefits p { font-size: 13px; }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+          .rivotBestFitReference .rivotBestFitCard,
+          .rivotBestFitReference .rivotBestFitCardImage,
+          .rivotBestFitArrow { transition: none !important; }
+        }
+
+        /* Keep this shared showcase isolated from legacy homepage card rules. */
+        .rivotBestFit.rivotBestFitReference {
+          --accent: #ef7430;
+          min-height: calc(100svh - 88px);
+          display: flex;
+          align-items: center;
+          padding: clamp(28px, 4svh, 58px) clamp(18px, 3vw, 54px) clamp(18px, 2.5svh, 30px);
+          background: var(--bg, #fff);
+        }
+
+        .rivotBestFit.rivotBestFitReference::before { display: none; }
+
+        .rivotBestFitReference .rivotBestFitShell {
+          display: grid;
+          grid-template-columns: minmax(290px, 330px) minmax(0, 1fr);
+          column-gap: clamp(18px, 2vw, 30px);
+          width: min(100%, 1760px);
+        }
+        .rivotBestFitReference .rivotBestFitHeader { grid-column: 1 / -1; }
+        .rivotBestFitReference .rivotBestFitHeader > p { display: inline-flex; margin: 0 0 clamp(14px, 2svh, 22px); color: var(--accent); font-size: clamp(14px, 1.05vw, 20px); }
+        .rivotBestFitReference .rivotBestFitHeader > p::before,
+        .rivotBestFitReference .rivotBestFitHeader > p::after { display: block; }
+        .rivotBestFitReference .rivotBestFitHeader h2 { font-size: clamp(42px, 4vw, 70px); line-height: .96; letter-spacing: -.052em; }
+        .rivotBestFitReference .rivotBestFitHeader small { margin-top: clamp(10px, 1.6svh, 17px); font-size: clamp(16px, 1.3vw, 23px); }
+        .rivotBestFitReference .rivotBestFitGrid { grid-column: 2; grid-row: 2; grid-template-columns: repeat(2, minmax(0, 1fr)); align-items: stretch; gap: clamp(16px, 1.5vw, 28px); width: 100%; margin: clamp(22px, 2.7svh, 38px) 0 0; }
+        .rivotBestFitReference .rivotBestFitBenefits {
+          grid-column: 1;
+          grid-row: 2;
+          grid-template-columns: 1fr;
+          align-self: stretch;
+          margin-top: clamp(22px, 2.7svh, 38px);
+          overflow: hidden;
+          padding: 12px 20px;
+          border: 1px solid color-mix(in srgb, var(--accent) 14%, var(--border));
+          border-radius: 22px;
+          background: linear-gradient(145deg, var(--surface), color-mix(in srgb, var(--surface) 94%, var(--accent) 6%));
+          box-shadow: 0 18px 40px var(--shadow);
+        }
+        .rivotBestFitReference .rivotBestFitBenefits article {
+          min-height: 0;
+          gap: 14px;
+          padding: 14px 2px;
+          border-left: 0;
+          border-top: 1px solid var(--border);
+        }
+        .rivotBestFitReference .rivotBestFitBenefits article:first-child { border-top: 0; }
+        .rivotBestFitReference .rivotBestFitBenefits article > span { width: 50px; height: 50px; flex-basis: 50px; }
+        .rivotBestFitReference .rivotBestFitBenefits svg { width: 29px; height: 29px; }
+        .rivotBestFitReference .rivotBestFitBenefits h3 { font-size: clamp(15px, 1vw, 18px); line-height: 1.12; }
+        .rivotBestFitReference .rivotBestFitBenefits p { margin-top: 4px; font-size: clamp(12px, .9vw, 15px); }
+
+        .rivotBestFitReference .rivotBestFitCard,
+        .rivotBestFitReference .rivotBestFitSubscription {
+          display: block;
+          box-sizing: border-box;
+          height: 100%;
+          min-height: 390px;
+          padding: clamp(88px, 7vw, 116px) clamp(22px, 2.1vw, 40px) 24px;
+          border: 1px solid color-mix(in srgb, var(--accent) 10%, rgba(21,25,29,.08));
+          border-radius: 22px;
+          background: #f6f3f0;
+          text-align: left;
+          transform: skewX(-3deg);
+          transform-origin: center;
+        }
+
+        .rivotBestFitReference .rivotBestFitCard::before,
+        .rivotBestFitReference .rivotBestFitAccessories::before {
+          z-index: 1;
+          background: linear-gradient(180deg, rgba(248,249,250,.98) 0%, rgba(248,249,250,.96) 30%, rgba(248,249,250,.7) 46%, rgba(248,249,250,.08) 67%, rgba(248,249,250,0) 100%);
+        }
+
+        .rivotBestFitReference .rivotBestFitBattery {
+          background:
+            linear-gradient(138deg, rgba(255,255,255,.96) 0 31%, rgba(255,239,226,.8) 31.2% 59%, rgba(255,174,113,.58) 59.2% 100%),
+            #fff5ed;
+        }
+
+        .rivotBestFitReference .rivotBestFitBattery::before {
+          background:
+            linear-gradient(130deg, rgba(255,255,255,.98) 0 31%, rgba(255,244,235,.48) 45%, rgba(255,149,75,.02) 65%),
+            linear-gradient(180deg, rgba(255,255,255,.92) 0%, rgba(255,255,255,.7) 30%, transparent 53%);
+        }
+
+        .rivotBestFitReference .rivotBestFitSubscription::before {
+          background: linear-gradient(180deg, rgba(236,249,255,.99) 0%, rgba(236,249,255,.97) 31%, rgba(236,249,255,.75) 47%, rgba(236,249,255,.08) 69%, rgba(4,18,9,.04) 100%);
+        }
+
+        .rivotBestFitReference .rivotBestFitCard h3,
+        .rivotBestFitReference .rivotBestFitSubscription h3 { margin-top: clamp(9px, 1.2svh, 12px); color: #090b0d; font-size: clamp(25px, 1.85vw, 35px); text-shadow: none; }
+        .rivotBestFitReference .rivotBestFitCardImage { object-fit: cover; }
+
+        .rivotBestFitReference .rivotBestFitCopy,
+        .rivotBestFitReference .rivotBestFitArrow {
+          transform: skewX(3deg);
+        }
+
+        .rivotBestFitReference .rivotBestFitAccessories .rivotBestFitCardImage,
+        .rivotBestFitReference .rivotBestFitSubscription .rivotBestFitCardImage {
+          inset: -2% -6% !important;
+          width: 112% !important;
+          height: 104% !important;
+          max-width: none !important;
+          transform: skewX(3deg) scale(1.03);
+        }
+
+        .rivotBestFitReference .rivotBestFitAccessories .rivotBestFitCardImage {
+          inset: -2% -6% !important;
+          width: 112% !important;
+          height: 104% !important;
+          object-fit: cover;
+          object-position: center;
+          transform: skewX(3deg) scale(1.03);
+        }
+
+        .rivotBestFitReference .rivotBestFitSubscription .rivotBestFitCardImage {
+          object-position: 68% 72%;
+        }
+
+        .rivotBestFitReference .rivotBestFitBattery .rivotBestFitCardImage {
+          transform: skewX(3deg) scale(1.03);
+        }
+
+        @media (min-width: 1024px) {
+          .rivotBestFitReference .rivotBestFitAccessories .rivotBestFitCopy { width: 45%; }
+          .rivotBestFitReference .rivotBestFitBattery .rivotBestFitCopy { width: 66%; }
+          .rivotBestFitReference .rivotBestFitSubscription .rivotBestFitCopy { width: 54%; }
+        }
+
+        @media (min-width: 1024px) and (max-height: 900px) {
+          .rivotBestFit.rivotBestFitReference {
+            padding-top: clamp(20px, 2.7svh, 28px);
+            padding-bottom: 14px;
+          }
+
+          .rivotBestFitReference .rivotBestFitHeader > p {
+            margin-bottom: 12px;
+            font-size: clamp(13px, .95vw, 17px);
+          }
+
+          .rivotBestFitReference .rivotBestFitHeader h2 {
+            font-size: clamp(38px, 3.5vw, 58px);
+          }
+
+          .rivotBestFitReference .rivotBestFitHeader small {
+            margin-top: 8px;
+            font-size: clamp(14px, 1.15vw, 19px);
+          }
+
+          .rivotBestFitReference .rivotBestFitGrid { margin-top: clamp(16px, 2svh, 24px); }
+
+          .rivotBestFitReference .rivotBestFitCard,
+          .rivotBestFitReference .rivotBestFitSubscription {
+            height: clamp(350px, 43svh, 410px);
+            min-height: 350px;
+          }
+
+          .rivotBestFitReference .rivotBestFitCopy { top: 16px; }
+          .rivotBestFitReference .rivotBestFitIcon { width: 54px; height: 54px; }
+          .rivotBestFitReference .rivotBestFitIcon svg { width: 32px; height: 32px; }
+          .rivotBestFitReference .rivotBestFitCard h3,
+          .rivotBestFitReference .rivotBestFitSubscription h3 { margin-top: 8px; font-size: clamp(23px, 1.65vw, 30px); }
+          .rivotBestFitReference .rivotBestFitCopy > p { margin-top: 7px; font-size: clamp(14px, 1.08vw, 17px); }
+          .rivotBestFitReference .rivotBestFitArrow { right: 18px; bottom: 18px; width: 44px; height: 44px; font-size: 23px; }
+          .rivotBestFitReference .rivotBestFitBenefits { margin-top: 12px; padding-block: 8px; }
+          .rivotBestFitReference .rivotBestFitBenefits article > span { width: 54px; height: 54px; flex-basis: 54px; }
+          .rivotBestFitReference .rivotBestFitBenefits svg { width: 32px; height: 32px; }
+        }
+
+        @media (min-width: 768px) and (max-width: 1023px) {
+          .rivotBestFitReference .rivotBestFitGrid { grid-template-columns: repeat(2, minmax(0, 1fr)); width: 100%; }
+        }
+
+        @media (max-width: 1023px) {
+          .rivotBestFit.rivotBestFitReference { min-height: 0; display: block; }
+          .rivotBestFitReference .rivotBestFitShell { display: block; }
+          .rivotBestFitReference .rivotBestFitBenefits {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            margin-top: 18px;
+          }
+          .rivotBestFitReference .rivotBestFitBenefits article {
+            min-height: 76px;
+            padding: 10px 18px;
+            border-top: 0;
+            border-left: 1px solid #aeb9c7;
+          }
+          .rivotBestFitReference .rivotBestFitBenefits article:nth-child(odd) { border-left: 0; }
+          .rivotBestFitReference .rivotBestFitCard,
+          .rivotBestFitReference .rivotBestFitSubscription,
+          .rivotBestFitReference .rivotBestFitCopy,
+          .rivotBestFitReference .rivotBestFitArrow,
+          .rivotBestFitReference .rivotBestFitAccessories .rivotBestFitCardImage,
+          .rivotBestFitReference .rivotBestFitSubscription .rivotBestFitCardImage,
+          .rivotBestFitReference .rivotBestFitBattery .rivotBestFitCardImage { transform: none; }
+
+          .rivotBestFitArrow:hover { transform: scale(1.08); }
+        }
+
+        @media (max-width: 767px) {
+          .rivotBestFit.rivotBestFitReference { padding: 54px 18px 22px; }
+          .rivotBestFitReference .rivotBestFitGrid { grid-template-columns: 1fr; width: min(100%, 680px); }
+          .rivotBestFitReference .rivotBestFitCard,
+          .rivotBestFitReference .rivotBestFitSubscription { height: clamp(410px, 70vw, 520px); min-height: 410px; }
+        }
+
+        @media (max-width: 560px) {
+          .rivotBestFitReference .rivotBestFitCard,
+          .rivotBestFitReference .rivotBestFitSubscription { height: 420px; min-height: 420px; padding: 90px 22px 22px; }
+          .rivotBestFitReference .rivotBestFitBenefits { grid-template-columns: 1fr; }
+          .rivotBestFitReference .rivotBestFitBenefits article,
+          .rivotBestFitReference .rivotBestFitBenefits article:nth-child(odd) { border-left: 0; border-top: 1px solid #aeb9c7; }
+          .rivotBestFitReference .rivotBestFitBenefits article:first-child { border-top: 0; }
+        }
+
+        .rivotBestFitReference .rivotBestFitCard,
+        .rivotBestFitReference .rivotBestFitSubscription,
+        .rivotBestFitReference .rivotBestFitBattery {
+          background: #272b2f !important;
+          border-color: rgba(15,18,21,.14) !important;
+          box-shadow: 0 20px 44px rgba(18,22,26,.16);
+        }
+
+        .rivotBestFitReference .rivotBestFitCardImage {
+          filter: brightness(.78) saturate(.94) contrast(1.02) !important;
+        }
+
+        .rivotBestFitReference .rivotBestFitCard::before,
+        .rivotBestFitReference .rivotBestFitAccessories::before,
+        .rivotBestFitReference .rivotBestFitBattery::before,
+        .rivotBestFitReference .rivotBestFitSubscription::before {
+          background: linear-gradient(180deg, rgba(24,28,32,.86) 0%, rgba(24,28,32,.72) 30%, rgba(24,28,32,.38) 49%, rgba(24,28,32,.03) 72%, rgba(24,28,32,0) 100%) !important;
+        }
+
+        .rivotBestFitReference .rivotBestFitCard h3,
+        .rivotBestFitReference .rivotBestFitSubscription h3 {
+          color: #f6f7f8 !important;
+          text-shadow: none !important;
+        }
+
+        .rivotBestFitReference .rivotBestFitCopy > p {
+          color: #fff !important;
+          font-weight: 650;
+          text-shadow: 0 2px 10px rgba(0, 0, 0, .82) !important;
+        }
+
+        .rivotBestFitReference .rivotBestFitIcon,
+        .rivotBestFitReference .rivotBestFitIconGreen { background: color-mix(in srgb, #272b2f 78%, var(--accent) 22%); }
+
+        html:is([data-theme="dark"], [data-rivot-theme="dark"]) .rivotBestFitReference .rivotBestFitCard h3,
+        html:is([data-theme="dark"], [data-rivot-theme="dark"]) .rivotBestFitReference .rivotBestFitSubscription h3 {
+          color: #f6f7f8 !important;
+          text-shadow: none !important;
+        }
+
+        html:is([data-theme="dark"], [data-rivot-theme="dark"]) .rivotBestFitReference .rivotBestFitCopy > p {
+          color: #fff !important;
+          text-shadow: 0 2px 10px rgba(0, 0, 0, .88) !important;
+        }
+
+        html:is([data-theme="dark"], [data-rivot-theme="dark"]) .rivotBestFitReference .rivotBestFitCard,
+        html:is([data-theme="dark"], [data-rivot-theme="dark"]) .rivotBestFitReference .rivotBestFitSubscription,
+        html:is([data-theme="dark"], [data-rivot-theme="dark"]) .rivotBestFitReference .rivotBestFitBattery {
+          background: #151719 !important;
+          border-color: rgba(255,255,255,.1) !important;
+          box-shadow: 0 20px 46px rgba(0,0,0,.34);
+        }
+
+        html:is([data-theme="dark"], [data-rivot-theme="dark"]) .rivotBestFitReference .rivotBestFitCardImage {
+          filter: brightness(.48) saturate(.78) contrast(1.04) !important;
+        }
+
+        html:is([data-theme="dark"], [data-rivot-theme="dark"]) .rivotBestFitReference .rivotBestFitCard::before,
+        html:is([data-theme="dark"], [data-rivot-theme="dark"]) .rivotBestFitReference .rivotBestFitAccessories::before,
+        html:is([data-theme="dark"], [data-rivot-theme="dark"]) .rivotBestFitReference .rivotBestFitBattery::before,
+        html:is([data-theme="dark"], [data-rivot-theme="dark"]) .rivotBestFitReference .rivotBestFitSubscription::before {
+          background: linear-gradient(180deg, rgba(15,18,21,.98) 0%, rgba(15,18,21,.94) 30%, rgba(15,18,21,.66) 49%, rgba(15,18,21,.08) 72%, rgba(15,18,21,0) 100%) !important;
+        }
+
+        html:is([data-theme="dark"], [data-rivot-theme="dark"]) .rivotBestFitReference :is(.rivotBestFitIcon, .rivotBestFitIconGreen) {
+          background: color-mix(in srgb, #151719 74%, var(--accent) 26%);
+        }
+
+        html:is([data-theme="dark"], [data-rivot-theme="dark"]) .rivotBestFitReference .rivotBestFitBenefits {
+          background: #151719 !important;
+          border-color: rgba(255,255,255,.12) !important;
+          box-shadow: 0 18px 42px rgba(0,0,0,.3);
+        }
+
+        html:is([data-theme="dark"], [data-rivot-theme="dark"]) .rivotBestFitReference .rivotBestFitBenefits h3 {
+          color: #f5f6f7 !important;
+        }
+
+        html:is([data-theme="dark"], [data-rivot-theme="dark"]) .rivotBestFitReference .rivotBestFitBenefits p {
+          color: #aab6c5 !important;
+        }
+
+        html:is([data-theme="dark"], [data-rivot-theme="dark"]) .rivotBestFitReference .rivotBestFitBenefits article {
+          border-left-color: rgba(255,255,255,.16) !important;
+        }
+
+        html:is([data-theme="dark"], [data-rivot-theme="dark"]) .rivotBestFitReference .rivotBestFitBenefits article > span {
+          background: #2a211c !important;
+        }
+
+        html:is([data-theme="dark"], [data-rivot-theme="dark"]) .rivotBestFitReference .rivotBestFitHeader small {
+          color: #91a3bd !important;
+        }
+
+        .rivotBestFitReference .rivotBestFitBenefits,
+        html:is([data-theme="dark"], [data-rivot-theme="dark"]) .rivotBestFitReference .rivotBestFitBenefits {
+          padding-inline: 0;
+          border: 0 !important;
+          border-radius: 0;
+          background: transparent !important;
+          box-shadow: none;
         }
       `}</style>
     </>

@@ -209,7 +209,6 @@ export default function Home() {
   const detailCardsRef = useRef<HTMLDivElement>(null);
   const performanceCardsRef = useRef<HTMLDivElement>(null);
   const engineeringCardsRef = useRef<HTMLDivElement>(null);
-  const bestFitSectionRef = useRef<HTMLElement>(null);
   const [selectedDesignColor, setSelectedDesignColor] = useState<(typeof bookingColors)[number]>(bookingColors[0]);
   const [selectedRideInsight, setSelectedRideInsight] = useState(0);
   const [activeFeatureSlide, setActiveFeatureSlide] = useState(0);
@@ -226,7 +225,6 @@ export default function Home() {
   const [performanceTextVisible, setPerformanceTextVisible] = useState(false);
   const [rideInsightsTextVisible, setRideInsightsTextVisible] = useState(false);
   const [engineeringTextVisible, setEngineeringTextVisible] = useState(false);
-  const [bestFitVisible, setBestFitVisible] = useState(false);
   const selectedHeroImageRef = useRef(0);
   const [activeProductSection, setActiveProductSection] = useState("key-features");
   const [showBackToTop, setShowBackToTop] = useState(false);
@@ -329,19 +327,6 @@ export default function Home() {
     const observer = new IntersectionObserver(
       ([entry]) => setRideInsightsTextVisible(entry.isIntersecting),
       { threshold: .18, rootMargin: "-8% 0px -8% 0px" },
-    );
-
-    observer.observe(section);
-    return () => observer.disconnect();
-  }, []);
-
-  useEffect(() => {
-    const section = bestFitSectionRef.current;
-    if (!section) return;
-
-    const observer = new IntersectionObserver(
-      ([entry]) => setBestFitVisible(entry.isIntersecting),
-      { threshold: 0.18 },
     );
 
     observer.observe(section);
@@ -1296,45 +1281,7 @@ export default function Home() {
 
       <SavingsCalculator />
 
-      <ProductDetailSupportSections includeBestFit={false} />
-
-      <section
-        ref={bestFitSectionRef}
-        className={`rivotBestFit rivotBestFitAnimated${bestFitVisible ? " isVisible" : ""}`}
-        aria-labelledby="best-fit-title"
-      >
-        <div className="rivotBestFitShell">
-          <div className="rivotBestFitHeader">
-            <h2 id="best-fit-title">A best fit for your Scooter</h2>
-            <p>There's more under the hood.</p>
-          </div>
-
-          <div className="rivotBestFitGrid">
-            <article className="rivotBestFitCard rivotBestFitAccessories">
-              <Image src="/images/shop/accessories.optimized.webp" alt="RIVOT scooter accessories" fill sizes="(max-width: 760px) 100vw, 33vw" className="rivotBestFitCardImage" />
-              <h3>Accessories</h3>
-              <p>There's more under the hood.</p>
-              <Link href="/merchandise" className="rivotBestFitCta">Shop accessories <span aria-hidden="true">{"\u2192"}</span></Link>
-            </article>
-
-            <Link href="/legal/warranty" className="rivotBestFitCard" aria-label="View RIVOT extended warranty">
-              <Image src="/images/shop/battery.optimized.webp" alt="Battery and motor extended warranty" fill sizes="(max-width: 760px) 100vw, 33vw" className="rivotBestFitCardImage" />
-              <p className="rivotBestFitEyebrow rivotBestFitGreen">Extended Warranty</p>
-              <h3>Battery + Motor</h3>
-              <p>Engineered for a longer, smarter ride.</p>
-              <span className="rivotBestFitCta">Explore more</span>
-            </Link>
-
-            <article className="rivotBestFitCard rivotBestFitSubscription">
-              <Image src="/images/shop/smart-care.optimized.webp" alt="Smart Care extended scooter coverage" fill sizes="(max-width: 760px) 100vw, 33vw" className="rivotBestFitCardImage" />
-              <p className="rivotBestFitEyebrow rivotBestFitBlue">Subscription</p>
-              <h3>Smart Care</h3>
-              <p>Extended Warranty &amp; Care for your Simple Scooters.</p>
-              <Link href="/legal/subscriptions" className="rivotBestFitCta">Explore more</Link>
-            </article>
-          </div>
-        </div>
-      </section>
+      <ProductDetailSupportSections />
 
       <Faqs />
 
